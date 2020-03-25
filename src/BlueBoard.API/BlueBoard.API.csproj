@@ -10,5 +10,11 @@
       <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="5.0.2" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Content Include="..\.editorconfig">
+        <Link>.editorconfig</Link>
+      </Content>
+    </ItemGroup>
+
 
 </Project>

@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\BlueBoard.Common\BlueBoard.Common.csproj" />
+      <ProjectReference Include="..\BlueBoard.Persistence.Abstractions\BlueBoard.Persistence.Abstractions.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Dapper" Version="2.0.30" />
+    </ItemGroup>
+
+</Project>
