@@ -1,7 +1,14 @@
 using System;
 using System.IO;
 using System.Reflection;
+using AutoMapper;
+using BlueBoard.API.Contracts.Base;
+using BlueBoard.API.Filters;
 using BlueBoard.API.Swagger;
+using BlueBoard.Common;
+using BlueBoard.Module.Identity.SignIn;
+using FluentValidation;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +24,7 @@ namespace BlueBoard.API
     {
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            this.Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
@@ -25,23 +32,30 @@ namespace BlueBoard.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers().SetCompatibilityVersion(CompatibilityVersion.Latest);
+            services.AddControllers(options => options.Filters.Add(typeof(BlueBoardExceptionFilter)))
+                .SetCompatibilityVersion(CompatibilityVersion.Latest);
+
             services.AddSwaggerGen(config =>
             {
                 config.SwaggerDoc("v1", new OpenApiInfo {Title = "BlueBoard API", Version = "v1"});
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 config.IncludeXmlComments(xmlPath);
-                config.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
-                {
-                    Description = "Standard Authorization header using the Bearer scheme. Example: \"bearer {token}\"",
-                    In = ParameterLocation.Header,
-                    Name = "Authorization",
-                    Type = SecuritySchemeType.ApiKey
-                });
+                config.AddSecurityDefinition(
+                    "oauth2",
+                    new OpenApiSecurityScheme
+                    {
+                        Description = "Standard Authorization header using the Bearer scheme. Example: \"bearer {token}\"",
+                        In = ParameterLocation.Header,
+                        Name = "Authorization",
+                        Type = SecuritySchemeType.ApiKey
+                    });
                 config.OperationFilter<SecurityRequirementsOperationFilter>();
                 config.DocumentFilter<LowercaseDocumentFilter>();
             });
+            services.AddMediatR(typeof(SignInCommandHandler));
+            services.AddValidatorsFromAssemblyContaining<SignInCommandHandler>();
+            services.AddAutoMapper(typeof(ApiRequest));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -16,5 +16,9 @@
       </Content>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\BlueBoard.Module.Identity\BlueBoard.Module.Identity.csproj" />
+    </ItemGroup>
+
 
 </Project>

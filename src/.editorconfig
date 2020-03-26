@@ -195,7 +195,7 @@ dotnet_naming_symbols.non_field_members.applicable_accessibilities = public, int
 dotnet_naming_symbols.non_field_members.required_modifiers =
 
 dotnet_naming_symbols.field_members.applicable_kinds = field
-dotnet_naming_symbols.field_members.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
+dotnet_naming_symbols.field_members.applicable_accessibilities = private
 dotnet_naming_symbols.field_members.required_modifiers =
 
 # Naming styles

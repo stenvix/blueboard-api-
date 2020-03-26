@@ -5,6 +5,7 @@ namespace BlueBoard.Common.Enums
         Undefined = 0,
         Success = 1,
         DatabaseError = 2,
-        ConfigurationError = 3
+        ConfigurationError = 3,
+        ValidationError = 4
     }
 }
