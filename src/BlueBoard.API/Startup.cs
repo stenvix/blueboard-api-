@@ -6,7 +6,9 @@ using BlueBoard.API.Contracts.Base;
 using BlueBoard.API.Filters;
 using BlueBoard.API.Swagger;
 using BlueBoard.Common;
+using BlueBoard.Mail.Services;
 using BlueBoard.Module.Identity.SignIn;
+using BlueBoard.Module.Mail.Config;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -56,6 +58,10 @@ namespace BlueBoard.API
             services.AddMediatR(typeof(SignInCommandHandler));
             services.AddValidatorsFromAssemblyContaining<SignInCommandHandler>();
             services.AddAutoMapper(typeof(ApiRequest));
+            services.AddMemoryCache();
+
+            services.AddSingleton<IMailService, MailService>();
+            services.Configure<MailOptions>(this.Configuration.GetSection("Mail"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

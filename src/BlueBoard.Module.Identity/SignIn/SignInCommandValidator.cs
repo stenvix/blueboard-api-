@@ -8,9 +8,9 @@ namespace BlueBoard.Module.Identity.SignIn
     {
         public SignInCommandValidator()
         {
-            // this.RuleFor(i => i.Email)
-            //     .NotEmpty().WithErrorCode(ErrorCodes.EmptyEmail)
-            //     .EmailAddress().WithErrorCode(ErrorCodes.InvalidEmail);
+            this.RuleFor(i => i.Email)
+                .NotEmpty().WithErrorCode(ErrorCodes.EmptyEmail)
+                .EmailAddress().WithErrorCode(ErrorCodes.InvalidEmail);
         }
     }
 }

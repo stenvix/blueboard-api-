@@ -352,3 +352,5 @@ MigrationBackup/
 # Rider IDE
 
 src/.idea
+
+src/BlueBoard.API/appsettings.*.json

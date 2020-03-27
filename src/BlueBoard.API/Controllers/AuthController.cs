@@ -30,7 +30,7 @@ namespace BlueBoard.API.Controllers
         [HttpPost("sign-up")]
         [ProducesResponseType(typeof(SignUpResponse), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ApiResponse), (int)HttpStatusCode.BadRequest)]
-        public async Task<SignUpResponse> SignInAsync([FromBody] SignUpRequest request)
+        public async Task<SignUpResponse> SignUpAsync([FromBody] SignUpRequest request)
         {
             await this.Mediator.Send(this.Mapper.Map<SignUpCommand>(request));
 
