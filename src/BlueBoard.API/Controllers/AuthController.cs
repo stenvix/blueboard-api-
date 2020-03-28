@@ -22,7 +22,7 @@ namespace BlueBoard.API.Controllers
         [ProducesResponseType(typeof(ApiResponse), (int)HttpStatusCode.BadRequest)]
         public async Task<SignInResponse> SignInAsync([FromBody] SignInRequest request)
         {
-            await this.Mediator.Send(this.Mapper.Map<SignInCommand>(request));
+            await this.Mediator.Send(this.Mapper.Map<SignInCommand>(request)).ConfigureAwait(false);
 
             return new SignInResponse(ResponseCode.Success);
         }
@@ -32,7 +32,7 @@ namespace BlueBoard.API.Controllers
         [ProducesResponseType(typeof(ApiResponse), (int)HttpStatusCode.BadRequest)]
         public async Task<SignUpResponse> SignUpAsync([FromBody] SignUpRequest request)
         {
-            await this.Mediator.Send(this.Mapper.Map<SignUpCommand>(request));
+            await this.Mediator.Send(this.Mapper.Map<SignUpCommand>(request)).ConfigureAwait(false);
 
             return new SignUpResponse(ResponseCode.Success);
         }

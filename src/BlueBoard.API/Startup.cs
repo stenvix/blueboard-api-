@@ -9,6 +9,12 @@ using BlueBoard.Common;
 using BlueBoard.Mail.Services;
 using BlueBoard.Module.Identity.SignIn;
 using BlueBoard.Module.Mail.Config;
+using BlueBoard.Persistence;
+using BlueBoard.Persistence.Abstractions;
+using BlueBoard.Persistence.Abstractions.Repositories;
+using BlueBoard.Persistence.Postgres;
+using BlueBoard.Persistence.Repositories;
+using FluentMigrator.Runner;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -47,7 +53,8 @@ namespace BlueBoard.API
                     "oauth2",
                     new OpenApiSecurityScheme
                     {
-                        Description = "Standard Authorization header using the Bearer scheme. Example: \"bearer {token}\"",
+                        Description =
+                            "Standard Authorization header using the Bearer scheme. Example: \"bearer {token}\"",
                         In = ParameterLocation.Header,
                         Name = "Authorization",
                         Type = SecuritySchemeType.ApiKey
@@ -55,21 +62,40 @@ namespace BlueBoard.API
                 config.OperationFilter<SecurityRequirementsOperationFilter>();
                 config.DocumentFilter<LowercaseDocumentFilter>();
             });
+
+            //Libs
             services.AddMediatR(typeof(SignInCommandHandler));
             services.AddValidatorsFromAssemblyContaining<SignInCommandHandler>();
             services.AddAutoMapper(typeof(ApiRequest));
             services.AddMemoryCache();
+            services.AddFluentMigratorCore().ConfigureRunner(builder =>
+                    builder.AddPostgres()
+                        .WithMigrationsIn(typeof(UnitOfWork).Assembly)
+                        .WithGlobalConnectionString(this.Configuration.GetConnectionString("Default")))
+                .AddLogging(i => i.AddFluentMigratorConsole());
 
-            services.AddSingleton<IMailService, MailService>();
+            //Options
             services.Configure<MailOptions>(this.Configuration.GetSection("Mail"));
+
+            //Services
+            services.AddSingleton<IMailService, MailService>();
+            services.AddSingleton<IConnectionStringProvider>(
+                new ConnectionStringProvider("Default", this.Configuration));
+            services.AddSingleton<IConnectionFactory, PostgresConnectionFactory>();
+            services.AddTransient<IUnitOfWorkFactory, UnitOfWorkFactory>();
+            services.AddSingleton<IUserRepository, UserRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IMigrationRunner migrationRunner)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                if (migrationRunner.HasMigrationsToApplyUp())
+                {
+                    migrationRunner.MigrateUp();
+                }
             }
             else
             {
@@ -86,6 +112,16 @@ namespace BlueBoard.API
             app.UseRouting();
             app.UseAuthorization();
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            this.SetupDapper();
+        }
+
+        private void RunMigrations()
+        {
+        }
+
+        private void SetupDapper()
+        {
+            Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
         }
     }
 }

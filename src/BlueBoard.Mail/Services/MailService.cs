@@ -1,3 +1,4 @@
+using System;
 using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
@@ -19,8 +20,10 @@ namespace BlueBoard.Mail.Services
 
         public Task SendMailAsync(MailModel mail)
         {
-            var message = new MailMessage(this.options.Email, mail.MailTo)
+            var message = new MailMessage()
             {
+                From = new MailAddress(this.options.Email, this.options.Name),
+                To = {mail.MailTo},
                 Subject = mail.Subject,
                 Body = mail.Text
             };
@@ -36,6 +39,7 @@ namespace BlueBoard.Mail.Services
                 client.Credentials = new NetworkCredential(this.options.Email, this.options.Password);
                 client.DeliveryMethod = SmtpDeliveryMethod.Network;
                 client.EnableSsl = true;
+                client.Timeout = 5000;
 
                 client.Send(message);
             }

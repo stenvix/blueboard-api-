@@ -9,6 +9,7 @@ namespace BlueBoard.API.Contracts.Base
         public MappingProfile()
         {
             this.CreateMap<SignInRequest, SignInCommand>();
+            this.CreateMap<SignUpRequest, SignUpCommand>();
         }
     }
 }

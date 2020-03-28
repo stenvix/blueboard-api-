@@ -1,4 +1,6 @@
 using System.Net;
+using BlueBoard.API.Contracts.Base;
+using BlueBoard.Common;
 using BlueBoard.Module.Common.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -6,7 +8,7 @@ using Microsoft.Extensions.Logging;
 
 namespace BlueBoard.API.Filters
 {
-public class BlueBoardExceptionFilter : ExceptionFilterAttribute
+    public class BlueBoardExceptionFilter : ExceptionFilterAttribute
     {
         private readonly ILogger<BlueBoardExceptionFilter> logger;
 
@@ -23,9 +25,17 @@ public class BlueBoardExceptionFilter : ExceptionFilterAttribute
             {
                 context.HttpContext.Response.ContentType = "application/json";
                 context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                // this.logger.LogError("Code: {code}, Errors: {@errors}", exception.Code, exception.Errors);
-                // var model = new ExceptionModel(exception.Code, exception.Errors);
-                // context.Result = new JsonResult(model);
+                this.logger.LogError("Code: {code}, Errors: {@errors}", exception.ResponseCode, exception.Errors);
+                var response = new ExceptionApiResponse(exception.ResponseCode, exception.Errors);
+                context.Result = new JsonResult(response);
+                return;
+            }
+
+            if (context.Exception is BlueBoardException generalException)
+            {
+                context.HttpContext.Response.StatusCode = (int)HttpStatusCode.OK;
+                var response = new ExceptionApiResponse(generalException.ResponseCode, null, generalException.Message);
+                context.Result = new JsonResult(response);
                 return;
             }
 
@@ -46,10 +56,10 @@ public class BlueBoardExceptionFilter : ExceptionFilterAttribute
                 //         break;
                 //     }
                 default:
-                    {
-                        code = HttpStatusCode.InternalServerError;
-                        break;
-                    }
+                {
+                    code = HttpStatusCode.InternalServerError;
+                    break;
+                }
             }
 
             context.HttpContext.Response.ContentType = "application/json";
@@ -58,10 +68,10 @@ public class BlueBoardExceptionFilter : ExceptionFilterAttribute
             {
                 context.Result = new JsonResult(new
                 {
-                    error = new[] { context.Exception.Message },
-                    stackTrace = context.Exception.StackTrace,
+                    error = new[] {context.Exception.Message}, stackTrace = context.Exception.StackTrace,
                 });
             }
+
             context.Result = new EmptyResult();
         }
     }
