@@ -36,7 +36,7 @@ namespace BlueBoard.Mail.Services
         {
             using (var client = new SmtpClient(this.options.Host, this.options.Port))
             {
-                client.Credentials = new NetworkCredential(this.options.Email, this.options.Password);
+                client.Credentials = new NetworkCredential(this.options.Username, this.options.Password);
                 client.DeliveryMethod = SmtpDeliveryMethod.Network;
                 client.EnableSsl = true;
                 client.Timeout = 5000;
