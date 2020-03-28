@@ -33,10 +33,9 @@ namespace BlueBoard.Module.Identity.SignIn
 
         protected override async Task Handle(SignInCommand request, CancellationToken cancellationToken)
         {
-            //TODO: check if email exists
             using (var connection = this.connectionFactory.Create())
             {
-                var exists = this.userRepository.IsUserExists(connection, request.Email);
+                var exists = await this.userRepository.IsUserExistsAsync(connection, request.Email);
                 if (!exists)
                 {
                     throw new BlueBoardValidationException(ErrorCodes.InvalidEmail);
@@ -46,7 +45,7 @@ namespace BlueBoard.Module.Identity.SignIn
             }
 
             var password = PasswordHelper.GeneratePassword();
-            this.memoryCache.Set($"{Constants.Cache.SignKey}-{request.Email}", password);
+            this.memoryCache.Set(PasswordHelper.GetCacheKey(request.Email), password);
 
             var mail = new MailModel(request.Email, "BlueBoard App", $"Temporary password: {password}");
             await this.mailService.SendMailAsync(mail);

@@ -23,7 +23,8 @@ namespace BlueBoard.Module.Identity.SignUp
         private readonly IUnitOfWorkFactory unitOfWorkFactory;
         private readonly IUserRepository userRepository;
 
-        public SignUpCommandHandler(IMailService mailService, IMemoryCache memoryCache, IUnitOfWorkFactory unitOfWorkFactory, IUserRepository userRepository)
+        public SignUpCommandHandler(IMailService mailService, IMemoryCache memoryCache,
+            IUnitOfWorkFactory unitOfWorkFactory, IUserRepository userRepository)
         {
             this.mailService = mailService;
             this.memoryCache = memoryCache;
@@ -35,20 +36,20 @@ namespace BlueBoard.Module.Identity.SignUp
         {
             using (var unitOfWork = this.unitOfWorkFactory.Create())
             {
-                var exists = this.userRepository.IsUserExists(unitOfWork.Connection, request.Email);
+                var exists = await this.userRepository.IsUserExistsAsync(unitOfWork.Connection, request.Email);
                 if (exists)
                 {
                     throw new BlueBoardValidationException(ErrorCodes.EmailInUse);
                 }
 
-                var result = this.userRepository.CreateUser(unitOfWork.Connection, request.Email);
+                await this.userRepository.CreateUserAsync(unitOfWork.Connection, request.Email);
 
                 unitOfWork.Commit();
             }
 
 
             var password = PasswordHelper.GeneratePassword();
-            this.memoryCache.Set($"{Constants.Cache.SignKey}-{request.Email}", password);
+            this.memoryCache.Set(PasswordHelper.GetCacheKey(request.Email), password);
 
             var mail = new MailModel(request.Email, "BlueBoard App", $"Temporary password: {password}");
             await this.mailService.SendMailAsync(mail);

@@ -4,9 +4,11 @@ using System.Reflection;
 using AutoMapper;
 using BlueBoard.API.Contracts.Base;
 using BlueBoard.API.Filters;
+using BlueBoard.API.Helpers;
 using BlueBoard.API.Swagger;
 using BlueBoard.Common;
 using BlueBoard.Mail.Services;
+using BlueBoard.Module.Identity.Helpers;
 using BlueBoard.Module.Identity.SignIn;
 using BlueBoard.Module.Mail.Config;
 using BlueBoard.Persistence;
@@ -73,16 +75,18 @@ namespace BlueBoard.API
                         .WithMigrationsIn(typeof(UnitOfWork).Assembly)
                         .WithGlobalConnectionString(this.Configuration.GetConnectionString("Default")))
                 .AddLogging(i => i.AddFluentMigratorConsole());
+            services.AddJwt(this.Configuration);
 
             //Options
             services.Configure<MailOptions>(this.Configuration.GetSection("Mail"));
 
             //Services
+            services.AddSingleton<IAccessHandler, AccessHandler>();
             services.AddSingleton<IMailService, MailService>();
             services.AddSingleton<IConnectionStringProvider>(
                 new ConnectionStringProvider("Default", this.Configuration));
             services.AddSingleton<IConnectionFactory, PostgresConnectionFactory>();
-            services.AddTransient<IUnitOfWorkFactory, UnitOfWorkFactory>();
+            services.AddSingleton<IUnitOfWorkFactory, UnitOfWorkFactory>();
             services.AddSingleton<IUserRepository, UserRepository>();
         }
 
@@ -92,10 +96,7 @@ namespace BlueBoard.API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                if (migrationRunner.HasMigrationsToApplyUp())
-                {
-                    migrationRunner.MigrateUp();
-                }
+                app.RunMigrations(migrationRunner);
             }
             else
             {
@@ -113,10 +114,6 @@ namespace BlueBoard.API
             app.UseAuthorization();
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
             this.SetupDapper();
-        }
-
-        private void RunMigrations()
-        {
         }
 
         private void SetupDapper()

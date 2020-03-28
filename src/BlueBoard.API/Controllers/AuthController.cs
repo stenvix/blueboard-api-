@@ -8,6 +8,7 @@ using BlueBoard.Common.Enums;
 using BlueBoard.Contract.Identity.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 
 namespace BlueBoard.API.Controllers
 {
@@ -35,6 +36,17 @@ namespace BlueBoard.API.Controllers
             await this.Mediator.Send(this.Mapper.Map<SignUpCommand>(request)).ConfigureAwait(false);
 
             return new SignUpResponse(ResponseCode.Success);
+        }
+
+        [HttpPost("verify")]
+        [ProducesResponseType(typeof(VerifyAccessResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ApiResponse), (int)HttpStatusCode.BadRequest)]
+        public async Task<VerifyAccessResponse> VerifyAccessAsync([FromBody] VerifyAccessRequest request)
+        {
+            var response = await this.Mediator.Send(this.Mapper.Map<VerifyAccessCommand>(request))
+                .ConfigureAwait(false);
+
+            return this.Mapper.Map<VerifyAccessResponse>(response);
         }
     }
 }

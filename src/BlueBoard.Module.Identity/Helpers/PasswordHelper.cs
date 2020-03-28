@@ -8,5 +8,10 @@ namespace BlueBoard.Module.Identity.Helpers
         {
             return Guid.NewGuid().ToString("N");
         }
+
+        public static string GetCacheKey(string email)
+        {
+            return $"{Constants.Cache.SignKey}-{email}";
+        }
     }
 }

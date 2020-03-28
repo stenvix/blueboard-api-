@@ -1,8 +1,8 @@
-namespace BlueBoard.Contract.Identity.Models
+namespace BlueBoard.API.Contracts.Auth
 {
-    public class AuthTokenModel
+    public class VerifyAccessResponse
     {
-        public AuthTokenModel(string accessToken, long expires)
+        public VerifyAccessResponse(string accessToken, long expires)
         {
             this.AccessToken = accessToken;
             this.Expires = expires;
