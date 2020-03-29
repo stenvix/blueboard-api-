@@ -28,9 +28,6 @@ namespace BlueBoard.Persistence.Repositories
 
         public async Task<UserEntity> CreateUserAsync(IDbConnection connection, string email)
         {
-            // var p = new DynamicParameters();
-            // p.Add("email_in", email, DbType.StringFixedLength, ParameterDirection.Input, size:256);
-            // p.Add("status_in", (byte)UserStatus.Initialized, DbType.Byte, ParameterDirection.Input);
             var parameters = new
             {
                 email_in = new DbString {Value = email, IsFixedLength = true, Length = 256, IsAnsi = true},

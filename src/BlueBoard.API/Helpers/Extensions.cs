@@ -40,13 +40,10 @@ namespace BlueBoard.API.Helpers
 
         public static void RunMigrations(this IApplicationBuilder builder, IMigrationRunner migrationRunner)
         {
-            Task.Run(() =>
+            if (migrationRunner.HasMigrationsToApplyUp())
             {
-                if (migrationRunner.HasMigrationsToApplyUp())
-                {
-                    migrationRunner.MigrateUp();
-                }
-            });
+                migrationRunner.MigrateUp();
+            }
         }
     }
 }
