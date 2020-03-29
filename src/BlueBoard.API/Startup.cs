@@ -6,7 +6,6 @@ using BlueBoard.API.Contracts.Base;
 using BlueBoard.API.Filters;
 using BlueBoard.API.Helpers;
 using BlueBoard.API.Swagger;
-using BlueBoard.Common;
 using BlueBoard.Mail.Services;
 using BlueBoard.Module.Identity.Helpers;
 using BlueBoard.Module.Identity.SignIn;
@@ -16,6 +15,7 @@ using BlueBoard.Persistence.Abstractions;
 using BlueBoard.Persistence.Abstractions.Repositories;
 using BlueBoard.Persistence.Postgres;
 using BlueBoard.Persistence.Repositories;
+using Dapper;
 using FluentMigrator.Runner;
 using FluentValidation;
 using MediatR;
@@ -118,7 +118,7 @@ namespace BlueBoard.API
 
         private void SetupDapper()
         {
-            Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
+            DefaultTypeMap.MatchNamesWithUnderscores = true;
         }
     }
 }

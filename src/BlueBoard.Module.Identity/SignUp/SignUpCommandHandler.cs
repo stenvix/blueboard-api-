@@ -1,7 +1,5 @@
 using System.Threading;
 using System.Threading.Tasks;
-using BlueBoard.Common;
-using BlueBoard.Common.Enums;
 using BlueBoard.Contract.Common;
 using BlueBoard.Contract.Identity.Commands;
 using BlueBoard.Mail.Models;
@@ -9,7 +7,6 @@ using BlueBoard.Mail.Services;
 using BlueBoard.Module.Common.Exceptions;
 using BlueBoard.Module.Identity.Helpers;
 using BlueBoard.Persistence.Abstractions;
-using BlueBoard.Persistence.Abstractions.Entities;
 using BlueBoard.Persistence.Abstractions.Repositories;
 using MediatR;
 using Microsoft.Extensions.Caching.Memory;

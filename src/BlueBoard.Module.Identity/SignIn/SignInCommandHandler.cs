@@ -1,7 +1,5 @@
 using System.Threading;
 using System.Threading.Tasks;
-using BlueBoard.Common;
-using BlueBoard.Common.Enums;
 using BlueBoard.Contract.Common;
 using BlueBoard.Contract.Identity.Commands;
 using BlueBoard.Mail.Models;
@@ -38,7 +36,7 @@ namespace BlueBoard.Module.Identity.SignIn
                 var exists = await this.userRepository.IsUserExistsAsync(connection, request.Email);
                 if (!exists)
                 {
-                    throw new BlueBoardValidationException(ErrorCodes.InvalidEmail);
+                    throw new BlueBoardValidationException(ErrorCodes.NotFound);
                 }
 
                 connection.Close();
