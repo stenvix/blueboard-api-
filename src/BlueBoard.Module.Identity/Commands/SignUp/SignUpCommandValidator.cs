@@ -2,11 +2,11 @@ using BlueBoard.Contract.Common;
 using BlueBoard.Contract.Identity.Commands;
 using FluentValidation;
 
-namespace BlueBoard.Module.Identity.SignIn
+namespace BlueBoard.Module.Identity.Commands.SignUp
 {
-    public class SignInCommandValidator : AbstractValidator<SignInCommand>
+    public class SignUpCommandValidator : AbstractValidator<SignUpCommand>
     {
-        public SignInCommandValidator()
+        public SignUpCommandValidator()
         {
             this.RuleFor(i => i.Email)
                 .NotEmpty().WithErrorCode(ErrorCodes.EmptyEmail)

@@ -11,45 +11,44 @@ using BlueBoard.Persistence.Abstractions.Repositories;
 using MediatR;
 using Microsoft.Extensions.Caching.Memory;
 
-namespace BlueBoard.Module.Identity.SignUp
+namespace BlueBoard.Module.Identity.Commands.SignIn
 {
-    public class SignUpCommandHandler : AsyncRequestHandler<SignUpCommand>
+    public class SignInCommandHandler : AsyncRequestHandler<SignInCommand>
     {
         private readonly IMailService mailService;
         private readonly IMemoryCache memoryCache;
-        private readonly IUnitOfWorkFactory unitOfWorkFactory;
+        private readonly IConnectionFactory connectionFactory;
         private readonly IUserRepository userRepository;
 
-        public SignUpCommandHandler(IMailService mailService, IMemoryCache memoryCache,
-            IUnitOfWorkFactory unitOfWorkFactory, IUserRepository userRepository)
+        public SignInCommandHandler(IMailService mailService, IMemoryCache memoryCache,
+            IConnectionFactory connectionFactory, IUserRepository userRepository)
         {
             this.mailService = mailService;
             this.memoryCache = memoryCache;
-            this.unitOfWorkFactory = unitOfWorkFactory;
+            this.connectionFactory = connectionFactory;
             this.userRepository = userRepository;
         }
 
-        protected override async Task Handle(SignUpCommand request, CancellationToken cancellationToken)
+        protected override async Task Handle(SignInCommand request, CancellationToken cancellationToken)
         {
-            using (var unitOfWork = this.unitOfWorkFactory.Create())
+            using (var connection = this.connectionFactory.Create())
             {
-                var exists = await this.userRepository.IsUserExistsAsync(unitOfWork.Connection, request.Email);
-                if (exists)
+                var exists = await this.userRepository.IsUserExistsAsync(connection, request.Email);
+                if (!exists)
                 {
-                    throw new BlueBoardValidationException(ErrorCodes.EmailInUse);
+                    throw new BlueBoardValidationException(ErrorCodes.NotFound);
                 }
 
-                await this.userRepository.CreateUserAsync(unitOfWork.Connection, request.Email);
-
-                unitOfWork.Commit();
+                connection.Close();
             }
-
 
             var password = PasswordHelper.GeneratePassword();
             this.memoryCache.Set(PasswordHelper.GetCacheKey(request.Email), password);
 
             var mail = new MailModel(request.Email, "BlueBoard App", $"Temporary password: {password}");
-            await this.mailService.SendMailAsync(mail);
+#pragma warning disable 4014
+            Task.Run(() => { this.mailService.SendMailAsync(mail); }, cancellationToken);
+#pragma warning restore 4014
         }
     }
 }

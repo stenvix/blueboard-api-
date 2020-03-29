@@ -8,7 +8,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using MediatR;
 
-namespace BlueBoard.Module.Common
+namespace BlueBoard.Module.Common.Validation
 {
     public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : class
     {

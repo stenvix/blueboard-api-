@@ -4,6 +4,6 @@ namespace BlueBoard.Module.Identity.Helpers
 {
     public interface IAccessHandler
     {
-        AccessTokenModel CreateAccessToken(int userId, string email);
+        AccessTokenModel CreateAccessToken(long userId, string email);
     }
 }

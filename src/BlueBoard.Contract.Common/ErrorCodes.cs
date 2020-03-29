@@ -6,6 +6,7 @@ namespace BlueBoard.Contract.Common
 
         public static string EmptyEmail => "empty_email";
         public static string EmailInUse => "email_in_use";
+        public static string EmptyProfile => "empty_profile";
         public static string EmptyFirstName => "empty_first_name";
         public static string EmptyLastName => "empty_last_name";
         public static string EmptyPhone => "empty_phone";
@@ -29,6 +30,11 @@ namespace BlueBoard.Contract.Common
         public static string InvalidLogin => "invalid_login";
         public static string InvalidUsername => "invalid_username";
         public static string InvalidQuery => "invalid_query";
+        public static string InvalidFirstNameLength => "invalid_first_name_length";
+        public static string InvalidLastNameLength => "invalid_last_name_length";
+        public static string InvalidUsernameLength => "invalid_username_length";
+        public static string InvalidPhoneLength => "invalid_phone_length";
+
         public static string AlreadyExists => "already_exists";
     }
 }

@@ -1,9 +1,11 @@
 using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlueBoard.API.Controllers
 {
+    [Authorize]
     [ApiController]
     [Produces("application/json")]
     [Route("api/v1/[controller]")]

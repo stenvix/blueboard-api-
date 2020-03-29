@@ -7,6 +7,7 @@ using BlueBoard.API.Contracts.Base;
 using BlueBoard.Common.Enums;
 using BlueBoard.Contract.Identity.Commands;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 
@@ -18,6 +19,7 @@ namespace BlueBoard.API.Controllers
         {
         }
 
+        [AllowAnonymous]
         [HttpPost("sign-in")]
         [ProducesResponseType(typeof(SignInResponse), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ApiResponse), (int)HttpStatusCode.BadRequest)]
@@ -28,6 +30,7 @@ namespace BlueBoard.API.Controllers
             return new SignInResponse(ResponseCode.Success);
         }
 
+        [AllowAnonymous]
         [HttpPost("sign-up")]
         [ProducesResponseType(typeof(SignUpResponse), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ApiResponse), (int)HttpStatusCode.BadRequest)]
@@ -38,6 +41,7 @@ namespace BlueBoard.API.Controllers
             return new SignUpResponse(ResponseCode.Success);
         }
 
+        [AllowAnonymous]
         [HttpPost("verify")]
         [ProducesResponseType(typeof(VerifyAccessResponse), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ApiResponse), (int)HttpStatusCode.BadRequest)]

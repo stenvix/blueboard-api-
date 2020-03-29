@@ -7,8 +7,10 @@ using BlueBoard.API.Filters;
 using BlueBoard.API.Helpers;
 using BlueBoard.API.Swagger;
 using BlueBoard.Mail.Services;
+using BlueBoard.Module.Common;
+using BlueBoard.Module.Common.Validation;
+using BlueBoard.Module.Identity.Commands.SignIn;
 using BlueBoard.Module.Identity.Helpers;
-using BlueBoard.Module.Identity.SignIn;
 using BlueBoard.Module.Mail.Config;
 using BlueBoard.Persistence;
 using BlueBoard.Persistence.Abstractions;
@@ -68,6 +70,7 @@ namespace BlueBoard.API
             //Libs
             services.AddMediatR(typeof(SignInCommandHandler));
             services.AddValidatorsFromAssemblyContaining<SignInCommandHandler>();
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
             services.AddAutoMapper(typeof(ApiRequest));
             services.AddMemoryCache();
             services.AddFluentMigratorCore().ConfigureRunner(builder =>
@@ -76,12 +79,14 @@ namespace BlueBoard.API
                         .WithGlobalConnectionString(this.Configuration.GetConnectionString("Default")))
                 .AddLogging(i => i.AddFluentMigratorConsole());
             services.AddJwt(this.Configuration);
+            services.AddHttpContextAccessor();
 
             //Options
             services.Configure<MailOptions>(this.Configuration.GetSection("Mail"));
 
             //Services
             services.AddSingleton<IAccessHandler, AccessHandler>();
+            services.AddSingleton<ICurrentUserProvider, CurrentUserProvider>();
             services.AddSingleton<IMailService, MailService>();
             services.AddSingleton<IConnectionStringProvider>(
                 new ConnectionStringProvider("Default", this.Configuration));
@@ -111,6 +116,7 @@ namespace BlueBoard.API
             });
 
             app.UseRouting();
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
             this.SetupDapper();

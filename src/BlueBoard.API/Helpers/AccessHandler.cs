@@ -20,7 +20,7 @@ namespace BlueBoard.API.Helpers
         {
             this.options = options;
         }
-        public AccessTokenModel CreateAccessToken(int userId, string email)
+        public AccessTokenModel CreateAccessToken(long userId, string email)
         {
             Guard.Argument(userId).NotDefault();
             Guard.Argument(email).NotEmpty();
