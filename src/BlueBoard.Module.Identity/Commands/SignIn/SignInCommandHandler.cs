@@ -46,9 +46,7 @@ namespace BlueBoard.Module.Identity.Commands.SignIn
             this.memoryCache.Set(PasswordHelper.GetCacheKey(request.Email), password);
 
             var mail = new MailModel(request.Email, "BlueBoard App", $"Temporary password: {password}");
-#pragma warning disable 4014
-            Task.Run(() => { this.mailService.SendMailAsync(mail); }, cancellationToken);
-#pragma warning restore 4014
+            await this.mailService.SendMailAsync(mail);
         }
     }
 }
