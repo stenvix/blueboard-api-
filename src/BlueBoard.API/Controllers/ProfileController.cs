@@ -16,7 +16,7 @@ namespace BlueBoard.API.Controllers
         {
         }
 
-        [HttpGet("")]
+        [HttpGet]
         [ProducesResponseType(typeof(GetProfileResponse), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ApiResponse), (int)HttpStatusCode.Unauthorized)]
         public async Task<GetProfileResponse> GetCurrentProfileAsync()
@@ -26,7 +26,9 @@ namespace BlueBoard.API.Controllers
             return new GetProfileResponse(user);
         }
 
-        [HttpPost]
+        [HttpPut]
+        [ProducesResponseType(typeof(UpdateProfileResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ExceptionApiResponse), (int)HttpStatusCode.BadRequest)]
         public async Task<UpdateProfileResponse> UpdateCurrentProfileAsync(UpdateProfileRequest request)
         {
             var user = await this.Mediator.Send(this.Mapper.Map<UpdateCurrentProfileCommand>(request));

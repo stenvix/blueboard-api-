@@ -14,8 +14,8 @@ namespace BlueBoard.API.Contracts.Base
             this.CreateMap<SignUpRequest, SignUpCommand>();
             this.CreateMap<VerifyAccessRequest, VerifyAccessCommand>();
             this.CreateMap<AccessTokenModel, VerifyAccessResponse>();
-            this.CreateMap<UserEntity, ProfileModel>();
-            this.CreateMap<SlimProfileModel, UserEntity>();
+
+
             this.CreateMap<UpdateProfileRequest, UpdateCurrentProfileCommand>();
         }
     }
