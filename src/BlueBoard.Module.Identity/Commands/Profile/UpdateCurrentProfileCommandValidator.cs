@@ -36,7 +36,7 @@ namespace BlueBoard.Module.Identity.Commands.Profile
                 .WithErrorCode(ErrorCodes.InvalidPhone)
                 .SetValidator(new MaximumLengthValidator(Constraints.PhoneLength))
                 .WithErrorCode(ErrorCodes.InvalidPhoneLength)
-                .When(i => !string.IsNullOrEmpty(i.Profile.Username));
+                .When(i => !string.IsNullOrEmpty(i.Profile.Phone));
         }
     }
 }

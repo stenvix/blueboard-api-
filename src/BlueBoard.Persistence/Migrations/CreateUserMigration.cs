@@ -26,6 +26,7 @@ namespace BlueBoard.Persistence.Migrations
             this.Execute.Script("Scripts/create_user_v1.sql");
             this.Execute.Script("Scripts/find_user_by_email_v1.sql");
             this.Execute.Script("Scripts/find_user_by_id_v1.sql");
+            this.Execute.Script("Scripts/update_user_v1.sql");
         }
 
         public override void Down()
