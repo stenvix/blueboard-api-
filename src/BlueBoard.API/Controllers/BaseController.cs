@@ -1,4 +1,5 @@
 using System.Net;
+using System.Net.Mime;
 using AutoMapper;
 using BlueBoard.API.Contracts.Base;
 using MediatR;
@@ -9,9 +10,9 @@ namespace BlueBoard.API.Controllers
 {
     [Authorize]
     [ApiController]
-    [Produces("application/json")]
     [Route("api/v1/[controller]")]
-    [ProducesResponseType(typeof(ApiResponse), (int)HttpStatusCode.Unauthorized)]
+    [ProducesErrorResponseType(typeof(void))]
+    [Produces(MediaTypeNames.Application.Json)]
     public abstract class BaseController : ControllerBase
     {
         protected readonly IMediator Mediator;

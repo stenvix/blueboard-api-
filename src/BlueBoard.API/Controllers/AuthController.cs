@@ -1,15 +1,12 @@
-using System;
 using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using BlueBoard.API.Contracts.Auth;
 using BlueBoard.API.Contracts.Base;
-using BlueBoard.Common.Enums;
 using BlueBoard.Contract.Identity.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Formatters;
 
 namespace BlueBoard.API.Controllers
 {
@@ -21,24 +18,24 @@ namespace BlueBoard.API.Controllers
 
         [AllowAnonymous]
         [HttpPost("sign-in")]
-        [ProducesResponseType(typeof(SignInResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ErrorApiResponse), (int)HttpStatusCode.BadRequest)]
-        public async Task<SignInResponse> SignInAsync([FromBody] SignInRequest request)
+        public async Task<IActionResult> SignInAsync([FromBody] SignInRequest request)
         {
             await this.Mediator.Send(this.Mapper.Map<SignInCommand>(request)).ConfigureAwait(false);
 
-            return new SignInResponse();
+            return new OkResult();
         }
 
         [AllowAnonymous]
         [HttpPost("sign-up")]
-        [ProducesResponseType(typeof(SignUpResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ErrorApiResponse), (int)HttpStatusCode.BadRequest)]
-        public async Task<SignUpResponse> SignUpAsync([FromBody] SignUpRequest request)
+        public async Task<IActionResult> SignUpAsync([FromBody] SignUpRequest request)
         {
             await this.Mediator.Send(this.Mapper.Map<SignUpCommand>(request)).ConfigureAwait(false);
 
-            return new SignUpResponse();
+            return new OkResult();
         }
 
         [AllowAnonymous]
@@ -47,8 +44,7 @@ namespace BlueBoard.API.Controllers
         [ProducesResponseType(typeof(ErrorApiResponse), (int)HttpStatusCode.BadRequest)]
         public async Task<VerifyAccessResponse> VerifyAccessAsync([FromBody] VerifyAccessRequest request)
         {
-            var response = await this.Mediator.Send(this.Mapper.Map<VerifyAccessCommand>(request))
-                .ConfigureAwait(false);
+            var response = await this.Mediator.Send(this.Mapper.Map<VerifyAccessCommand>(request));
 
             return this.Mapper.Map<VerifyAccessResponse>(response);
         }
