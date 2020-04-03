@@ -109,7 +109,7 @@ namespace BlueBoard.API
             {
                 app.UseDeveloperExceptionPage();
                 app.RunMigrations(migrationRunner);
-                app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod());
+                app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             }
             else
             {
