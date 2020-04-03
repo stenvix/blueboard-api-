@@ -18,22 +18,21 @@ namespace BlueBoard.API.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(GetProfileResponse), (int)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(ApiResponse), (int)HttpStatusCode.Unauthorized)]
         public async Task<GetProfileResponse> GetCurrentProfileAsync()
         {
             var user = await this.Mediator.Send(new GetCurrentUserQuery());
 
-            return new GetProfileResponse(user);
+            return this.Mapper.Map<GetProfileResponse>(user);
         }
 
         [HttpPut]
         [ProducesResponseType(typeof(UpdateProfileResponse), (int)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(ExceptionApiResponse), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ExtendedErrorApiResponse), (int)HttpStatusCode.BadRequest)]
         public async Task<UpdateProfileResponse> UpdateCurrentProfileAsync(UpdateProfileRequest request)
         {
             var user = await this.Mediator.Send(this.Mapper.Map<UpdateCurrentProfileCommand>(request));
 
-            return new UpdateProfileResponse(user);
+            return this.Mapper.Map<UpdateProfileResponse>(user);
         }
     }
 }

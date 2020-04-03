@@ -1,16 +1,11 @@
 using BlueBoard.API.Contracts.Base;
+using BlueBoard.API.Contracts.Profile.Base;
 using BlueBoard.Common.Enums;
 using BlueBoard.Contract.Identity.Models;
 
 namespace BlueBoard.API.Contracts.Profile
 {
-    public class UpdateProfileResponse : ApiResponse
+    public class UpdateProfileResponse : ProfileResponse
     {
-        public ProfileModel Profile { get; }
-
-        public UpdateProfileResponse(ProfileModel profile) : base(ResponseCode.Success, null)
-        {
-            this.Profile = profile;
-        }
     }
 }

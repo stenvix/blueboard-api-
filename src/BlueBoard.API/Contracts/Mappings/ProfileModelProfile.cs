@@ -3,9 +3,9 @@ using BlueBoard.Persistence.Abstractions.Entities;
 
 namespace BlueBoard.API.Contracts.Mappings
 {
-    public class ProfileProfile : AutoMapper.Profile
+    public class ProfileModelProfile : AutoMapper.Profile
     {
-        public ProfileProfile()
+        public ProfileModelProfile()
         {
             this.CreateMap<UserEntity, ProfileModel>()
                 .IncludeBase<UserEntity, SlimProfileModel>();

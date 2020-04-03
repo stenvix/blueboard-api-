@@ -3,14 +3,14 @@ using BlueBoard.Common.Enums;
 
 namespace BlueBoard.API.Contracts.Base
 {
-    public class ExceptionApiResponse : ApiResponse
+    public class ExtendedErrorApiResponse : ErrorApiResponse
     {
-        public IList<string> Errors { get; }
-
-        public ExceptionApiResponse(ResponseCode responseCode, IList<string> errors, string responseMessage = null) :
+        public ExtendedErrorApiResponse(ResponseCode responseCode, IList<string> errors, string responseMessage = null) :
             base(responseCode, responseMessage)
         {
             this.Errors = errors;
         }
+
+        public IList<string> Errors { get; }
     }
 }

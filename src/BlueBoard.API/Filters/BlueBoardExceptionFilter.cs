@@ -26,7 +26,7 @@ namespace BlueBoard.API.Filters
                 context.HttpContext.Response.ContentType = "application/json";
                 context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 this.logger.LogError("Code: {code}, Errors: {@errors}", exception.ResponseCode, exception.Errors);
-                var response = new ExceptionApiResponse(exception.ResponseCode, exception.Errors);
+                var response = new ExtendedErrorApiResponse(exception.ResponseCode, exception.Errors);
                 context.Result = new JsonResult(response);
                 return;
             }
@@ -34,7 +34,7 @@ namespace BlueBoard.API.Filters
             if (context.Exception is BlueBoardException generalException)
             {
                 context.HttpContext.Response.StatusCode = (int)HttpStatusCode.OK;
-                var response = new ExceptionApiResponse(generalException.ResponseCode, null, generalException.Message);
+                var response = new ExtendedErrorApiResponse(generalException.ResponseCode, null, generalException.Message);
                 context.Result = new JsonResult(response);
                 return;
             }

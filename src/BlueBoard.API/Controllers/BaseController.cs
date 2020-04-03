@@ -1,4 +1,6 @@
+using System.Net;
 using AutoMapper;
+using BlueBoard.API.Contracts.Base;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +11,7 @@ namespace BlueBoard.API.Controllers
     [ApiController]
     [Produces("application/json")]
     [Route("api/v1/[controller]")]
+    [ProducesResponseType(typeof(ApiResponse), (int)HttpStatusCode.Unauthorized)]
     public abstract class BaseController : ControllerBase
     {
         protected readonly IMediator Mediator;

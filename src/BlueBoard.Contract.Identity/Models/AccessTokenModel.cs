@@ -9,6 +9,7 @@ namespace BlueBoard.Contract.Identity.Models
         }
 
         public string AccessToken { get; }
+        
         public long Expires { get; }
     }
 }

@@ -22,29 +22,29 @@ namespace BlueBoard.API.Controllers
         [AllowAnonymous]
         [HttpPost("sign-in")]
         [ProducesResponseType(typeof(SignInResponse), (int)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(ApiResponse), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ErrorApiResponse), (int)HttpStatusCode.BadRequest)]
         public async Task<SignInResponse> SignInAsync([FromBody] SignInRequest request)
         {
             await this.Mediator.Send(this.Mapper.Map<SignInCommand>(request)).ConfigureAwait(false);
 
-            return new SignInResponse(ResponseCode.Success);
+            return new SignInResponse();
         }
 
         [AllowAnonymous]
         [HttpPost("sign-up")]
         [ProducesResponseType(typeof(SignUpResponse), (int)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(ApiResponse), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ErrorApiResponse), (int)HttpStatusCode.BadRequest)]
         public async Task<SignUpResponse> SignUpAsync([FromBody] SignUpRequest request)
         {
             await this.Mediator.Send(this.Mapper.Map<SignUpCommand>(request)).ConfigureAwait(false);
 
-            return new SignUpResponse(ResponseCode.Success);
+            return new SignUpResponse();
         }
 
         [AllowAnonymous]
         [HttpPost("verify")]
         [ProducesResponseType(typeof(VerifyAccessResponse), (int)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(ApiResponse), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ErrorApiResponse), (int)HttpStatusCode.BadRequest)]
         public async Task<VerifyAccessResponse> VerifyAccessAsync([FromBody] VerifyAccessRequest request)
         {
             var response = await this.Mediator.Send(this.Mapper.Map<VerifyAccessCommand>(request))

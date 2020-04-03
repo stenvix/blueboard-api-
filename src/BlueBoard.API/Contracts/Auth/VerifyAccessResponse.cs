@@ -1,6 +1,8 @@
+using BlueBoard.API.Contracts.Base;
+
 namespace BlueBoard.API.Contracts.Auth
 {
-    public class VerifyAccessResponse
+    public class VerifyAccessResponse : ApiResponse
     {
         public VerifyAccessResponse(string accessToken, long expires)
         {
@@ -9,6 +11,7 @@ namespace BlueBoard.API.Contracts.Auth
         }
 
         public string AccessToken { get; }
+
         public long Expires { get; }
     }
 }
