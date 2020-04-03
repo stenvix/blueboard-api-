@@ -34,12 +34,15 @@ namespace BlueBoard.API
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             this.Configuration = configuration;
+            this.Environment = environment;
         }
 
         public IConfiguration Configuration { get; }
+
+        public IWebHostEnvironment Environment { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -80,6 +83,10 @@ namespace BlueBoard.API
                 .AddLogging(i => i.AddFluentMigratorConsole());
             services.AddJwt(this.Configuration);
             services.AddHttpContextAccessor();
+            if (this.IsDevelopmentEnvironment())
+            {
+                services.AddCors();
+            }
 
             //Options
             services.Configure<MailOptions>(this.Configuration.GetSection("Mail"));
@@ -96,12 +103,13 @@ namespace BlueBoard.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IMigrationRunner migrationRunner)
+        public void Configure(IApplicationBuilder app, IMigrationRunner migrationRunner)
         {
-            if (env.IsDevelopment() || env.EnvironmentName == "Docker" || env.EnvironmentName == "Heroku")
+            if (this.IsDevelopmentEnvironment())
             {
                 app.UseDeveloperExceptionPage();
                 app.RunMigrations(migrationRunner);
+                app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod());
             }
             else
             {
@@ -125,6 +133,12 @@ namespace BlueBoard.API
         private void SetupDapper()
         {
             DefaultTypeMap.MatchNamesWithUnderscores = true;
+        }
+
+        private bool IsDevelopmentEnvironment()
+        {
+            return this.Environment.IsDevelopment() || this.Environment.IsEnvironment("Docker") ||
+                   this.Environment.IsEnvironment("Heroku");
         }
     }
 }
