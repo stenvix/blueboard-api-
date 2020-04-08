@@ -14,7 +14,12 @@ namespace BlueBoard.Contract.Common
         public static string EmptyCountry => "empty_country";
         public static string EmptyLogin => "empty_login";
         public static string EmptyUsername => "empty_username";
+        public static string EmptyTrip => "empty_trip";
         public static string EmptyTripId => "empty_trip_id";
+        public static string EmptyName => "empty_name";
+        public static string EmptyStartDate => "empty_start_date";
+        public static string EmptyEndDate => "empty_end_date";
+
 
         public static string InvalidId => "invalid_id";
         public static string InvalidData => "invalid_data";
@@ -34,6 +39,8 @@ namespace BlueBoard.Contract.Common
         public static string InvalidLastNameLength => "invalid_last_name_length";
         public static string InvalidUsernameLength => "invalid_username_length";
         public static string InvalidPhoneLength => "invalid_phone_length";
+        public static string InvalidNameLength => "invalid_name_length";
+        public static string InvalidDescriptionLength => "invalid_description_length";
 
         public static string AlreadyExists => "already_exists";
     }

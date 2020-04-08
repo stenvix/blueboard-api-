@@ -12,13 +12,16 @@ using BlueBoard.Module.Common.Validation;
 using BlueBoard.Module.Identity.Commands.SignIn;
 using BlueBoard.Module.Identity.Helpers;
 using BlueBoard.Module.Mail.Config;
+using BlueBoard.Module.Trip.Commands.Create;
 using BlueBoard.Persistence;
 using BlueBoard.Persistence.Abstractions;
 using BlueBoard.Persistence.Abstractions.Repositories;
+using BlueBoard.Persistence.Migrations;
 using BlueBoard.Persistence.Postgres;
 using BlueBoard.Persistence.Repositories;
 using Dapper;
 using FluentMigrator.Runner;
+using FluentMigrator.Runner.VersionTableInfo;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -71,8 +74,9 @@ namespace BlueBoard.API
             });
 
             //Libs
-            services.AddMediatR(typeof(SignInCommandHandler));
+            services.AddMediatR(typeof(SignInCommandHandler), typeof(CreateTripCommandHandler));
             services.AddValidatorsFromAssemblyContaining<SignInCommandHandler>();
+            services.AddValidatorsFromAssemblyContaining<CreateTripCommandHandler>();
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
             services.AddAutoMapper(typeof(ApiRequest));
             services.AddMemoryCache();
@@ -81,6 +85,7 @@ namespace BlueBoard.API
                         .WithMigrationsIn(typeof(UnitOfWork).Assembly)
                         .WithGlobalConnectionString(this.Configuration.GetConnectionString("Default")))
                 .AddLogging(i => i.AddFluentMigratorConsole());
+            services.AddSingleton<IVersionTableMetaData, VersionTable>();
             services.AddJwt(this.Configuration);
             services.AddHttpContextAccessor();
             if (this.IsDevelopmentEnvironment())
@@ -93,13 +98,15 @@ namespace BlueBoard.API
 
             //Services
             services.AddSingleton<IAccessHandler, AccessHandler>();
-            services.AddSingleton<ICurrentUserProvider, CurrentUserProvider>();
             services.AddSingleton<IMailService, MailService>();
             services.AddSingleton<IConnectionStringProvider>(
                 new ConnectionStringProvider("Default", this.Configuration));
             services.AddSingleton<IConnectionFactory, PostgresConnectionFactory>();
             services.AddSingleton<IUnitOfWorkFactory, UnitOfWorkFactory>();
             services.AddSingleton<IUserRepository, UserRepository>();
+            services.AddSingleton<ITripRepository, TripRepository>();
+
+            services.AddTransient<ICurrentUserProvider, CurrentUserProvider>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

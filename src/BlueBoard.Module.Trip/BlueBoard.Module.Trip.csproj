@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\BlueBoard.Contract.Trip\BlueBoard.Contract.Trip.csproj" />
+      <ProjectReference Include="..\BlueBoard.Module.Common\BlueBoard.Module.Common.csproj" />
+    </ItemGroup>
+
+</Project>

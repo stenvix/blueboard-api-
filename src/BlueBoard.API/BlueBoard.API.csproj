@@ -22,26 +22,9 @@
 
     <ItemGroup>
       <ProjectReference Include="..\BlueBoard.Module.Identity\BlueBoard.Module.Identity.csproj" />
+      <ProjectReference Include="..\BlueBoard.Module.Trip\BlueBoard.Module.Trip.csproj" />
       <ProjectReference Include="..\BlueBoard.Persistence.Postgres\BlueBoard.Persistence.Postgres.csproj" />
       <ProjectReference Include="..\BlueBoard.Persistence\BlueBoard.Persistence.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Update="Scripts\find_user_by_email_v1.sql">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="Scripts\create_user_v1.sql">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="Scripts\user_exists_v1.sql">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="Scripts\find_user_by_id_v1.sql">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="Scripts\update_user_v1.sql">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
     </ItemGroup>
 
 
