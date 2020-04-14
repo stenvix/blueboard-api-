@@ -1,5 +1,6 @@
 using System;
 using BlueBoard.API.Contracts.Base;
+using BlueBoard.Common.Enums;
 
 namespace BlueBoard.API.Contracts.Trip.Base
 {
@@ -14,5 +15,7 @@ namespace BlueBoard.API.Contracts.Trip.Base
         public DateTime StartDate { get; set; }
 
         public DateTime EndDate { get; set; }
+
+        public TripStatus Status { get; set; }
     }
 }

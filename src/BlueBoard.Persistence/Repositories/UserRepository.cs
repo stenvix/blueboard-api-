@@ -1,7 +1,7 @@
 using System.Data;
 using System.Threading.Tasks;
+using BlueBoard.Common.Enums;
 using BlueBoard.Persistence.Abstractions.Entities;
-using BlueBoard.Persistence.Abstractions.Enums;
 using BlueBoard.Persistence.Abstractions.Repositories;
 using BlueBoard.Persistence.Helpers;
 using Dapper;
@@ -53,9 +53,9 @@ namespace BlueBoard.Persistence.Repositories
             return user;
         }
 
-        public async Task<UserEntity> FindById(IDbConnection connection, int id)
+        public async Task<UserEntity> FindById(IDbConnection connection, long id)
         {
-            var parameters = new {id_in = (long)id};
+            var parameters = new {id_in = id};
 
             var user = await connection.QueryFirstAsync<UserEntity>("find_user_by_id_v1", parameters,
                 commandType: CommandType.StoredProcedure);

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
 using BlueBoard.Persistence.Abstractions;
@@ -12,10 +13,7 @@ namespace BlueBoard.Persistence.Repositories
     {
         public async Task<TripEntity> GetAsync(IDbConnection dbConnection, long id)
         {
-            var parameters = new
-            {
-                id_in = id
-            };
+            var parameters = new {id_in = id};
 
             var trip = await dbConnection.QuerySingleAsync<TripEntity>("find_trip_by_id_v1", parameters,
                 commandType: CommandType.StoredProcedure);
@@ -57,6 +55,16 @@ namespace BlueBoard.Persistence.Repositories
                 commandType: CommandType.StoredProcedure);
 
             return trip;
+        }
+
+        public async Task<IEnumerable<TripEntity>> GetTripsByUserAsync(IDbConnection dbConnection, string email)
+        {
+            var parameters = new {email_in = DbFieldHelper.GetDbString(email, Constraints.EmailLength)};
+
+            var trips = await dbConnection.QueryAsync<TripEntity>("find_trips_by_user_v1", parameters,
+                commandType: CommandType.StoredProcedure);
+
+            return trips;
         }
     }
 }

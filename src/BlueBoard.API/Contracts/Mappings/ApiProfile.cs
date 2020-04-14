@@ -2,6 +2,7 @@ using BlueBoard.API.Contracts.Auth;
 using BlueBoard.API.Contracts.Profile;
 using BlueBoard.API.Contracts.Profile.Base;
 using BlueBoard.API.Contracts.Trip;
+using BlueBoard.API.Contracts.Trip.Base;
 using BlueBoard.Contract.Identity.Commands;
 using BlueBoard.Contract.Identity.Models;
 using BlueBoard.Contract.Trip.Commands;
@@ -37,6 +38,7 @@ namespace BlueBoard.API.Contracts.Mappings
 
             this.CreateMap<TripModel, CreateTripResponse>();
             this.CreateMap<TripModel, UpdateTripResponse>();
+            this.CreateMap<TripModel, GetTripResponse>();
         }
     }
 }

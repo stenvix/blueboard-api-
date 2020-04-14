@@ -23,12 +23,12 @@ namespace BlueBoard.API.Helpers
             this.emailLazy = new Lazy<string>(this.GetEmail);
         }
 
-        public int UserId => this.GetId();
+        public long UserId => this.GetId();
         public string Email => this.emailLazy.Value;
 
-        private int GetId()
+        private long GetId()
         {
-            if (int.TryParse(this.httpContextAccessor.HttpContext.User.Identity.Name, out var id))
+            if (long.TryParse(this.httpContextAccessor.HttpContext.User.Identity.Name, out var id))
             {
                 return id;
             }

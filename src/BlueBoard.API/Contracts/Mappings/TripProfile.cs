@@ -1,3 +1,4 @@
+using BlueBoard.API.Contracts.Trip.Base;
 using BlueBoard.Contract.Trip.Models;
 using BlueBoard.Persistence.Abstractions.Entities;
 
@@ -33,6 +34,9 @@ namespace BlueBoard.API.Contracts.Mappings
             this.CreateMap<TripModel, TripEntity>()
                 .IncludeBase<SlimTripModel, TripEntity>()
                 .ForMember(dest => dest.Id, src => src.Ignore());
+
+
+            this.CreateMap<TripModel, TripItem>();
         }
     }
 }

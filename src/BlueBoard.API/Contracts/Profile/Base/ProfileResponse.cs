@@ -1,5 +1,5 @@
 using BlueBoard.API.Contracts.Base;
-using BlueBoard.Persistence.Abstractions.Enums;
+using BlueBoard.Common.Enums;
 
 namespace BlueBoard.API.Contracts.Profile.Base
 {

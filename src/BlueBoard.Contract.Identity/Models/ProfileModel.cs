@@ -1,4 +1,4 @@
-using BlueBoard.Persistence.Abstractions.Enums;
+using BlueBoard.Common.Enums;
 
 namespace BlueBoard.Contract.Identity.Models
 {

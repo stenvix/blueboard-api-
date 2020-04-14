@@ -51,3 +51,15 @@ WHERE id = id_in;
 
 $BODY$ LANGUAGE 'sql';
 
+
+
+CREATE OR REPLACE FUNCTION find_trips_by_user_v1(email_in varchar(256))
+    RETURNS SETOF trips
+AS
+$BODY$
+
+SELECT *
+FROM trips
+WHERE created_by = email_in;
+
+$BODY$ LANGUAGE 'sql';

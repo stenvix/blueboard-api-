@@ -1,4 +1,4 @@
-namespace BlueBoard.Persistence.Abstractions.Enums
+namespace BlueBoard.Common.Enums
 {
     public enum TripStatus
     {

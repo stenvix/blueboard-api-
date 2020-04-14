@@ -1,12 +1,12 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using BlueBoard.Common.Enums;
 using BlueBoard.Contract.Trip.Commands;
 using BlueBoard.Contract.Trip.Models;
 using BlueBoard.Module.Common;
 using BlueBoard.Persistence.Abstractions;
 using BlueBoard.Persistence.Abstractions.Entities;
-using BlueBoard.Persistence.Abstractions.Enums;
 using BlueBoard.Persistence.Abstractions.Repositories;
 using MediatR;
 

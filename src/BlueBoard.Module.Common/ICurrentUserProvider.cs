@@ -2,7 +2,8 @@ namespace BlueBoard.Module.Common
 {
     public interface ICurrentUserProvider
     {
-        int UserId { get; }
+        long UserId { get; }
+
         string Email { get; }
     }
 }
