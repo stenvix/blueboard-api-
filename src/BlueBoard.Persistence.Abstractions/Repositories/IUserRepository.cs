@@ -8,12 +8,12 @@ namespace BlueBoard.Persistence.Abstractions.Repositories
     {
         Task<bool> IsUserExistsAsync(IDbConnection connection, string email);
 
-        Task<UserEntity> CreateUserAsync(IDbConnection connection, string email);
+        Task<UserEntity> CreateUserAsync(IDbConnection connection, string email, long? createdBy = null);
 
         Task<UserEntity> FindByEmailAsync(IDbConnection connection, string email);
 
         Task<UserEntity> FindById(IDbConnection connection, long id);
 
-        Task<UserEntity> Update(IDbConnection connection, UserEntity entity);
+        Task<UserEntity> Update(IDbConnection connection, UserEntity entity, long updatedBy);
     }
 }

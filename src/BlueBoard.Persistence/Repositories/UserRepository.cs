@@ -27,13 +27,15 @@ namespace BlueBoard.Persistence.Repositories
             return userExists;
         }
 
-        public async Task<UserEntity> CreateUserAsync(IDbConnection connection, string email)
+        public async Task<UserEntity> CreateUserAsync(IDbConnection connection, string email, long? createdBy = null)
         {
             var parameters = new
             {
                 email_in = DbFieldHelper.GetDbString(email, 256),
-                status_in = (byte)UserStatus.Initialized
+                status_in = (byte)UserStatus.Initialized,
+                created_by_in = createdBy
             };
+
             var user = await connection.QueryFirstAsync<UserEntity>("create_user_v1", parameters,
                 commandType: CommandType.StoredProcedure);
 
@@ -63,7 +65,7 @@ namespace BlueBoard.Persistence.Repositories
             return user;
         }
 
-        public async Task<UserEntity> Update(IDbConnection connection, UserEntity entity)
+        public async Task<UserEntity> Update(IDbConnection connection, UserEntity entity, long updatedBy)
         {
             var parameters = new
             {
@@ -72,7 +74,8 @@ namespace BlueBoard.Persistence.Repositories
                 last_name_in = DbFieldHelper.GetDbString(entity.LastName, 128),
                 username_in = DbFieldHelper.GetDbString(entity.Username, 128),
                 email_in = DbFieldHelper.GetDbString(entity.Email, 256),
-                phone_in = DbFieldHelper.GetDbString(entity.Phone, 16)
+                phone_in = DbFieldHelper.GetDbString(entity.Phone, 16),
+                updated_by_in = updatedBy
             };
 
             var user = await connection.QueryFirstAsync<UserEntity>("update_user_v1", parameters,

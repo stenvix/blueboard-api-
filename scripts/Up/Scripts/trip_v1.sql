@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION create_trip_v1(email_in varchar(256),
+CREATE OR REPLACE FUNCTION create_trip_v1(user_id_in BIGINT,
                                           name_in VARCHAR(128),
                                           description_in VARCHAR(256),
                                           start_date_in TIMESTAMP WITHOUT TIME ZONE,
@@ -9,7 +9,7 @@ AS
 $BODY$
 
 INSERT INTO trips(created, created_by, name, description, start_date, end_date, status)
-VALUES ((now() at time zone 'utc'), email_in, name_in, description_in, start_date_in, end_date_in, status_in)
+VALUES ((now() at time zone 'utc'), user_id_in, name_in, description_in, start_date_in, end_date_in, status_in)
 
 RETURNING *;
 
@@ -17,7 +17,7 @@ $BODY$ LANGUAGE 'sql';
 
 
 CREATE OR REPLACE FUNCTION update_trip_v1(id_in bigint,
-                                          email_in varchar(256),
+                                          user_id_in BIGINT,
                                           name_in VARCHAR(128),
                                           description_in VARCHAR(256),
                                           start_date_in TIMESTAMP WITHOUT TIME ZONE,
@@ -28,7 +28,7 @@ $BODY$
 
 UPDATE trips
 SET updated     =(now() at time zone 'utc'),
-    updated_by  = email_in,
+    updated_by  = user_id_in,
     name        = name_in,
     description = description_in,
     start_date  = start_date_in,
@@ -53,13 +53,14 @@ $BODY$ LANGUAGE 'sql';
 
 
 
-CREATE OR REPLACE FUNCTION find_trips_by_user_v1(email_in varchar(256))
+CREATE OR REPLACE FUNCTION find_trips_by_user_v1(user_id_in BIGINT)
     RETURNS SETOF trips
 AS
 $BODY$
 
 SELECT *
 FROM trips
-WHERE created_by = email_in;
+WHERE created_by = user_id_in
+ORDER BY created;
 
 $BODY$ LANGUAGE 'sql';

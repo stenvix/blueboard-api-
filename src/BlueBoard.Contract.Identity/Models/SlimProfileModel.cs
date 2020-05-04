@@ -1,10 +1,9 @@
+using BlueBoard.Contract.Common.Models;
+
 namespace BlueBoard.Contract.Identity.Models
 {
-    public class SlimProfileModel
+    public class SlimProfileModel : SlimUserModel
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Username { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
     }

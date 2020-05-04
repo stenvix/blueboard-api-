@@ -1,32 +1,30 @@
-CREATE OR REPLACE FUNCTION "create_user_v1"(email_in varchar(256), status_in smallint)
-    RETURNS SETOF "users"
-    LANGUAGE 'sql'
-AS
+CREATE OR REPLACE FUNCTION create_user_v1(email_in VARCHAR(256), status_in SMALLINT, created_by_in BIGINT)
+    RETURNS SETOF users AS
 $BODY$
 
-INSERT INTO "users"("created", "created_by", "email", "status")
-VALUES ((now() at time zone 'utc'), email_in, email_in, status_in)
-RETURNING *
+INSERT INTO users ("created", "created_by", "email", "status")
+VALUES ((now() at time zone 'utc'), created_by_in, email_in, status_in)
+RETURNING *;
 
-$BODY$;
+$BODY$ LANGUAGE sql;
 
 
 
-CREATE OR REPLACE FUNCTION "find_user_by_email_v1"(email_in varchar(256))
-    RETURNS SETOF "users"
+CREATE OR REPLACE FUNCTION "find_user_by_email_v1"(email_in VARCHAR(256))
+    RETURNS SETOF users
     LANGUAGE 'sql'
 AS
 $BODY$
 
 SELECT *
-FROM "users"
+FROM users
 WHERE email = email_in
 
 $BODY$;
 
 
 
-CREATE OR REPLACE FUNCTION "find_user_by_id_v1"(id_in bigint)
+CREATE OR REPLACE FUNCTION "find_user_by_id_v1"(id_in BIGINT)
     RETURNS SETOF "users"
     LANGUAGE 'sql'
 AS
@@ -40,8 +38,8 @@ $BODY$;
 
 
 
-CREATE OR REPLACE FUNCTION "update_user_v1"(id_in bigint, first_name_in varchar(128), last_name_in varchar(128),
-                                            username_in varchar(128), email_in varchar(256), phone_in varchar(16))
+CREATE OR REPLACE FUNCTION "update_user_v1"(id_in BIGINT, first_name_in VARCHAR(128), last_name_in VARCHAR(128),
+                                            username_in VARCHAR(128), email_in VARCHAR(256), phone_in VARCHAR(16), updated_by_in BIGINT)
     RETURNS SETOF users
     LANGUAGE 'sql'
 AS
@@ -49,7 +47,7 @@ $BODY$
 
 UPDATE users
 SET updated    = (now() at time zone 'utc'),
-    updated_by = email_in,
+    updated_by = updated_by_in,
     first_name = first_name_in,
     last_name  = last_name_in,
     username   = username_in,

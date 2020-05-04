@@ -11,7 +11,8 @@ namespace BlueBoard.API.Contracts.Mappings
             this.CreateMap<TripEntity, SlimTripModel>();
 
             this.CreateMap<TripEntity, TripModel>()
-                .IncludeBase<TripEntity, SlimTripModel>();
+                .IncludeBase<TripEntity, SlimTripModel>()
+                .ForMember(dest=>dest.CreatedBy, src=>src.Ignore());
 
             this.CreateMap<SlimTripModel, TripEntity>()
                 .ForMember(dest => dest.Name, src =>

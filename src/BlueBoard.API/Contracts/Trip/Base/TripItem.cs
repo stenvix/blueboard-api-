@@ -1,5 +1,7 @@
 using System;
 using BlueBoard.Common.Enums;
+using BlueBoard.Contract.Common.Models;
+using BlueBoard.Contract.Identity.Models;
 
 namespace BlueBoard.API.Contracts.Trip.Base
 {
@@ -16,5 +18,7 @@ namespace BlueBoard.API.Contracts.Trip.Base
         public DateTime EndDate { get; set; }
 
         public TripStatus Status { get; set; }
+
+        public SlimUserModel CreatedBy { get; set; }
     }
 }

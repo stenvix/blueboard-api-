@@ -2,6 +2,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using BlueBoard.Common.Enums;
+using BlueBoard.Contract.Common.Models;
 using BlueBoard.Contract.Trip.Commands;
 using BlueBoard.Contract.Trip.Models;
 using BlueBoard.Module.Common;
@@ -18,14 +19,20 @@ namespace BlueBoard.Module.Trip.Commands.Create
         private readonly IUnitOfWorkFactory unitOfWorkFactory;
         private readonly ICurrentUserProvider currentUserProvider;
         private readonly ITripRepository tripRepository;
+        private readonly IUserRepository userRepository;
 
-        public CreateTripCommandHandler(IMapper mapper, IUnitOfWorkFactory unitOfWorkFactory,
-            ICurrentUserProvider currentUserProvider, ITripRepository tripRepository)
+        public CreateTripCommandHandler(
+            IMapper mapper,
+            IUnitOfWorkFactory unitOfWorkFactory,
+            ICurrentUserProvider currentUserProvider,
+            ITripRepository tripRepository,
+            IUserRepository userRepository)
         {
             this.mapper = mapper;
             this.unitOfWorkFactory = unitOfWorkFactory;
             this.currentUserProvider = currentUserProvider;
             this.tripRepository = tripRepository;
+            this.userRepository = userRepository;
         }
 
         public async Task<TripModel> Handle(CreateTripCommand request, CancellationToken cancellationToken)
@@ -33,12 +40,16 @@ namespace BlueBoard.Module.Trip.Commands.Create
             using (var unitOfWork = this.unitOfWorkFactory.Create())
             {
                 var entity = this.mapper.Map<TripEntity>(request.Trip);
-                entity.CreatedBy = this.currentUserProvider.Email;
+                entity.CreatedBy = this.currentUserProvider.UserId;
                 entity.Status = TripStatus.Initialized;
                 entity = await this.tripRepository.CreateTripAsync(unitOfWork.Connection, entity);
                 unitOfWork.Commit();
 
-                return this.mapper.Map<TripModel>(entity);
+                var createdBy = await this.userRepository.FindById(unitOfWork.Connection, this.currentUserProvider.UserId);
+                var trip = this.mapper.Map<TripModel>(entity);
+                trip.CreatedBy = this.mapper.Map<SlimUserModel>(createdBy);
+                
+                return trip;
             }
         }
     }

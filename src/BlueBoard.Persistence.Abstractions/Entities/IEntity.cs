@@ -7,7 +7,7 @@ namespace BlueBoard.Persistence.Abstractions.Entities
         long Id { get; set; }
         DateTime Created { get; set; }
         DateTime? Updated { get; set; }
-        string CreatedBy { get; set; }
-        string UpdatedBy { get; set; }
+        long CreatedBy { get; set; }
+        long UpdatedBy { get; set; }
     }
 }

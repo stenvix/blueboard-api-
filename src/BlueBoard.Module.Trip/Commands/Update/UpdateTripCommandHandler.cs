@@ -39,7 +39,7 @@ namespace BlueBoard.Module.Trip.Commands.Update
                 }
 
                 this.mapper.Map(request.Trip, trip);
-                trip.UpdatedBy = this.currentUserProvider.Email;
+                trip.UpdatedBy = this.currentUserProvider.UserId;
                 trip = await this.tripRepository.UpdateTripAsync(unitOfWork.Connection, trip);
                 unitOfWork.Commit();
 

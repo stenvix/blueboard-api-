@@ -13,6 +13,6 @@ namespace BlueBoard.Persistence.Abstractions.Repositories
 
         Task<TripEntity> UpdateTripAsync(IDbConnection dbConnection, TripEntity entity);
 
-        Task<IEnumerable<TripEntity>> GetTripsByUserAsync(IDbConnection dbConnection, string email);
+        Task<IEnumerable<TripEntity>> GetTripsByUserAsync(IDbConnection dbConnection, long userId);
     }
 }

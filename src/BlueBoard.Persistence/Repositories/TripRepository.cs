@@ -25,7 +25,7 @@ namespace BlueBoard.Persistence.Repositories
         {
             var parameters = new
             {
-                email_in = DbFieldHelper.GetDbString(entity.CreatedBy, Constraints.EmailLength),
+                user_id_in = entity.CreatedBy,
                 name_in = DbFieldHelper.GetDbString(entity.Name, Constraints.NameLength),
                 description_in = DbFieldHelper.GetDbString(entity.Description, Constraints.DescriptionLength),
                 start_date_in = entity.StartDate,
@@ -44,7 +44,7 @@ namespace BlueBoard.Persistence.Repositories
             var parameters = new
             {
                 id_in = entity.Id,
-                email_in = DbFieldHelper.GetDbString(entity.UpdatedBy, Constraints.EmailLength),
+                user_id_in = entity.UpdatedBy,
                 name_in = DbFieldHelper.GetDbString(entity.Name, Constraints.NameLength),
                 description_in = DbFieldHelper.GetDbString(entity.Description, Constraints.DescriptionLength),
                 start_date_in = entity.StartDate,
@@ -57,9 +57,9 @@ namespace BlueBoard.Persistence.Repositories
             return trip;
         }
 
-        public async Task<IEnumerable<TripEntity>> GetTripsByUserAsync(IDbConnection dbConnection, string email)
+        public async Task<IEnumerable<TripEntity>> GetTripsByUserAsync(IDbConnection dbConnection, long userId)
         {
-            var parameters = new {email_in = DbFieldHelper.GetDbString(email, Constraints.EmailLength)};
+            var parameters = new {user_id_in = userId};
 
             var trips = await dbConnection.QueryAsync<TripEntity>("find_trips_by_user_v1", parameters,
                 commandType: CommandType.StoredProcedure);

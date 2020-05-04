@@ -32,7 +32,7 @@ namespace BlueBoard.Module.Identity.Commands.Profile
             {
                 var user = await this.userRepository.FindById(unitOfWork.Connection, this.currentUserProvider.UserId);
                 this.mapper.Map(request.Profile, user);
-                user = await this.userRepository.Update(unitOfWork.Connection, user);
+                user = await this.userRepository.Update(unitOfWork.Connection, user, user.Id);
                 unitOfWork.Commit();
 
                 return this.mapper.Map<ProfileModel>(user);

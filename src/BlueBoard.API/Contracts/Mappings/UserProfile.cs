@@ -1,16 +1,20 @@
+using BlueBoard.Contract.Common.Models;
 using BlueBoard.Contract.Identity.Models;
 using BlueBoard.Persistence.Abstractions.Entities;
 
 namespace BlueBoard.API.Contracts.Mappings
 {
-    public class ProfileModelProfile : AutoMapper.Profile
+    public class UserProfile : AutoMapper.Profile
     {
-        public ProfileModelProfile()
+        public UserProfile()
         {
+            this.CreateMap<UserEntity, SlimUserModel>();
+
+            this.CreateMap<UserEntity, SlimProfileModel>()
+                .IncludeBase<UserEntity, SlimUserModel>();
+
             this.CreateMap<UserEntity, ProfileModel>()
                 .IncludeBase<UserEntity, SlimProfileModel>();
-
-            this.CreateMap<UserEntity, SlimProfileModel>();
 
             this.CreateMap<SlimProfileModel, UserEntity>()
                 .ForMember(dest => dest.FirstName, src =>
