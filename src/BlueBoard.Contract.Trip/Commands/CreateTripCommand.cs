@@ -5,6 +5,11 @@ namespace BlueBoard.Contract.Trip.Commands
 {
     public class CreateTripCommand : IRequest<TripModel>
     {
-        public SlimTripModel Trip { get; set; }
+        public CreateTripCommand(SlimTripModel trip)
+        {
+            this.Trip = trip;
+        }
+
+        public SlimTripModel Trip { get; }
     }
 }

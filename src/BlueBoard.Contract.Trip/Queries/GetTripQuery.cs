@@ -5,6 +5,11 @@ namespace BlueBoard.Contract.Trip.Queries
 {
     public class GetTripQuery : IRequest<TripModel>
     {
-        public long TripId { get; set; }
+        public GetTripQuery(long tripId)
+        {
+            this.TripId = tripId;
+        }
+
+        public long TripId { get;  }
     }
 }

@@ -1,13 +1,31 @@
+using BlueBoard.API.Contracts.Auth;
+using BlueBoard.API.Contracts.Profile;
+using BlueBoard.API.Contracts.Profile.Base;
 using BlueBoard.Contract.Common.Models;
 using BlueBoard.Contract.Identity.Models;
 using BlueBoard.Persistence.Abstractions.Entities;
 
 namespace BlueBoard.API.Contracts.Mappings
 {
-    public class UserProfile : AutoMapper.Profile
+    public class IdentityProfile : AutoMapper.Profile
     {
-        public UserProfile()
+        public IdentityProfile()
         {
+            // Requests
+            this.CreateMap<UpdateProfileRequest, SlimProfileModel>();
+
+            // Responses
+            this.CreateMap<AccessTokenModel, VerifyAccessResponse>();
+            this.CreateMap<ProfileModel, ProfileResponse>();
+
+            this.CreateMap<ProfileModel, GetProfileResponse>()
+                .IncludeBase<ProfileModel, ProfileResponse>();
+
+            this.CreateMap<ProfileModel, UpdateProfileResponse>()
+                .IncludeBase<ProfileModel, ProfileResponse>();
+
+
+            // Models
             this.CreateMap<UserEntity, SlimUserModel>();
 
             this.CreateMap<UserEntity, SlimProfileModel>()

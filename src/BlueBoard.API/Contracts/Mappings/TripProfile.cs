@@ -1,4 +1,7 @@
+using BlueBoard.API.Contracts.Trip;
 using BlueBoard.API.Contracts.Trip.Base;
+using BlueBoard.Contract.Common.Models;
+using BlueBoard.Contract.Trip.Commands;
 using BlueBoard.Contract.Trip.Models;
 using BlueBoard.Persistence.Abstractions.Entities;
 
@@ -8,6 +11,16 @@ namespace BlueBoard.API.Contracts.Mappings
     {
         public TripProfile()
         {
+            // Requests
+            this.CreateMap<CreateTripRequest, SlimTripModel>();
+            this.CreateMap<UpdateTripRequest, TripModel>();
+
+            // Responses
+            this.CreateMap<TripModel, CreateTripResponse>();
+            this.CreateMap<TripModel, UpdateTripResponse>();
+            this.CreateMap<TripModel, GetTripResponse>();
+
+            //Models
             this.CreateMap<TripEntity, SlimTripModel>();
 
             this.CreateMap<TripEntity, TripModel>()
@@ -38,6 +51,14 @@ namespace BlueBoard.API.Contracts.Mappings
 
 
             this.CreateMap<TripModel, TripItem>();
+
+            this.CreateMap<UserEntity, ParticipantModel>()
+                .IncludeBase<UserEntity, SlimUserModel>();
+
+            this.CreateMap<ParticipantModel, ParticipantItem>();
+            this.CreateMap<ParticipantEntity, ParticipantModel>();
+
+            this.CreateMap<AddParticipantCommand, ParticipantEntity>();
         }
     }
 }

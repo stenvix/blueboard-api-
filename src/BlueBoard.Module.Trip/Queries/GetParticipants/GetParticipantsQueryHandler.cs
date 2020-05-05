@@ -1,7 +1,8 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using BlueBoard.Contract.Common.Models;
 using BlueBoard.Contract.Trip.Models;
 using BlueBoard.Contract.Trip.Queries;
 using BlueBoard.Persistence.Abstractions;
@@ -10,35 +11,34 @@ using MediatR;
 
 namespace BlueBoard.Module.Trip.Queries
 {
-    public class GetTripQueryHandler : IRequestHandler<GetTripQuery, TripModel>
+    public class GetParticipantsQueryHandler : IRequestHandler<GetParticipantsQuery, IEnumerable<ParticipantModel>>
     {
         private readonly IMapper mapper;
         private readonly IConnectionFactory connectionFactory;
-        private readonly ITripRepository tripRepository;
+        private readonly IParticipantRepository participantRepository;
         private readonly IUserRepository userRepository;
 
-        public GetTripQueryHandler(
+        public GetParticipantsQueryHandler(
             IMapper mapper,
             IConnectionFactory connectionFactory,
-            ITripRepository tripRepository,
+            IParticipantRepository participantRepository,
             IUserRepository userRepository)
         {
             this.mapper = mapper;
             this.connectionFactory = connectionFactory;
-            this.tripRepository = tripRepository;
+            this.participantRepository = participantRepository;
             this.userRepository = userRepository;
         }
 
-        public async Task<TripModel> Handle(GetTripQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<ParticipantModel>> Handle(GetParticipantsQuery request, CancellationToken cancellationToken)
         {
             using (var connection = this.connectionFactory.Create())
             {
-                var entity = await this.tripRepository.GetAsync(connection, request.TripId);
-                var createdBy =  await this.userRepository.FindById(connection, entity.CreatedBy);
+                var entities = await this.participantRepository.GetByTripAsync(connection, request.TripId);
+                var userEntities =
+                    await this.userRepository.GetAllAsync(connection, entities.Select(i => i.UserId).ToArray());
 
-                var trip = this.mapper.Map<TripModel>(entity);
-                trip.CreatedBy = this.mapper.Map<ParticipantModel>(createdBy);
-                return trip;
+                return this.mapper.Map<IEnumerable<ParticipantModel>>(userEntities);
             }
         }
     }

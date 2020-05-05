@@ -24,12 +24,20 @@
       <Content Include="..\..\scripts\Down\Data\.keep">
         <Link>scripts\Down\Data\.keep</Link>
       </Content>
+      <Content Include="..\..\scripts\Down\Scripts\participant_v1.sql">
+        <Link>scripts\Down\Scripts\participant_v1.sql</Link>
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
       <Content Include="..\..\scripts\Down\Scripts\trip_v1.sql">
         <Link>scripts\Down\Scripts\trip_v1.sql</Link>
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
       <Content Include="..\..\scripts\Down\Scripts\user_v1.sql">
         <Link>scripts\Down\Scripts\user_v1.sql</Link>
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Include="..\..\scripts\Down\Structure\participant_v1.sql">
+        <Link>scripts\Down\Structure\participant_v1.sql</Link>
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
       <Content Include="..\..\scripts\Down\Structure\trip_v1.sql">
@@ -43,12 +51,20 @@
       <Content Include="..\..\scripts\Up\Data\.keep">
         <Link>scripts\Up\Data\.keep</Link>
       </Content>
+      <Content Include="..\..\scripts\Up\Scripts\participant_v1.sql">
+        <Link>scripts\Up\Scripts\participant_v1.sql</Link>
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
       <Content Include="..\..\scripts\Up\Scripts\trip_v1.sql">
         <Link>scripts\Up\Scripts\trip_v1.sql</Link>
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
       <Content Include="..\..\scripts\Up\Scripts\user_v1.sql">
         <Link>scripts\Up\Scripts\user_v1.sql</Link>
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Include="..\..\scripts\Up\Structure\participant_v1.sql">
+        <Link>scripts\Up\Structure\participant_v1.sql</Link>
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
       <Content Include="..\..\scripts\Up\Structure\trip_v1.sql">

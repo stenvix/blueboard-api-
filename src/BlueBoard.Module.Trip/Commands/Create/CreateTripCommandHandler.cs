@@ -47,8 +47,8 @@ namespace BlueBoard.Module.Trip.Commands.Create
 
                 var createdBy = await this.userRepository.FindById(unitOfWork.Connection, this.currentUserProvider.UserId);
                 var trip = this.mapper.Map<TripModel>(entity);
-                trip.CreatedBy = this.mapper.Map<SlimUserModel>(createdBy);
-                
+                trip.CreatedBy = this.mapper.Map<ParticipantModel>(createdBy);
+
                 return trip;
             }
         }

@@ -105,6 +105,7 @@ namespace BlueBoard.API
             services.AddSingleton<IUnitOfWorkFactory, UnitOfWorkFactory>();
             services.AddSingleton<IUserRepository, UserRepository>();
             services.AddSingleton<ITripRepository, TripRepository>();
+            services.AddSingleton<IParticipantRepository, ParticipantRepository>();
 
             services.AddTransient<ICurrentUserProvider, CurrentUserProvider>();
         }

@@ -1,0 +1,5 @@
+DROP FUNCTION IF EXISTS create_participant_v1
+DROP FUNCTION IF EXISTS find_participant_by_trip_v1
+DROP FUNCTION IF EXISTS find_participant_by_trip_and_user_v1
+DROP FUNCTION IF EXISTS participant_exists_v1
+DROP FUNCTION IF EXISTS remove_participant_v1

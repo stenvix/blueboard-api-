@@ -11,7 +11,7 @@ using BlueBoard.Persistence.Abstractions;
 using BlueBoard.Persistence.Abstractions.Repositories;
 using MediatR;
 
-namespace BlueBoard.Module.Trip.Queries.GetTrips
+namespace BlueBoard.Module.Trip.Queries
 {
     public class GetTripsQueryHandler : IRequestHandler<GetTripsQuery, IEnumerable<TripModel>>
     {
@@ -39,15 +39,14 @@ namespace BlueBoard.Module.Trip.Queries.GetTrips
         {
             using (var connection = this.connectionFactory.Create())
             {
-                var tripsEntities = await this.tripRepository.GetTripsByUserAsync(connection, this.currentUserProvider.UserId);
-                var createdBy =  await this.userRepository.FindById(connection, this.currentUserProvider.UserId);
-                var creator = this.mapper.Map<SlimUserModel>(createdBy);
+                var tripsEntities = await this.tripRepository.GetByUserAsync(connection, this.currentUserProvider.UserId);
                 var trips = this.mapper.Map<IList<TripModel>>(tripsEntities);
+                var usersIds = tripsEntities.Select(i => i.CreatedBy).Distinct().ToArray();
+                var creators = (await this.userRepository.GetAllAsync(connection, usersIds)).ToList();
                 foreach (var trip in trips)
                 {
-                    trip.CreatedBy = creator;
+                    trip.CreatedBy = this.mapper.Map<ParticipantModel>(creators.Single());
                 }
-
                 return trips;
             }
         }

@@ -57,7 +57,7 @@ namespace BlueBoard.Persistence.Repositories
             return trip;
         }
 
-        public async Task<IEnumerable<TripEntity>> GetTripsByUserAsync(IDbConnection dbConnection, long userId)
+        public async Task<IEnumerable<TripEntity>> GetByUserAsync(IDbConnection dbConnection, long userId)
         {
             var parameters = new {user_id_in = userId};
 

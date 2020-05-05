@@ -10,10 +10,9 @@ $BODY$
 
 INSERT INTO trips(created, created_by, name, description, start_date, end_date, status)
 VALUES ((now() at time zone 'utc'), user_id_in, name_in, description_in, start_date_in, end_date_in, status_in)
-
 RETURNING *;
 
-$BODY$ LANGUAGE 'sql';
+$BODY$ LANGUAGE sql;
 
 
 CREATE OR REPLACE FUNCTION update_trip_v1(id_in bigint,
@@ -36,7 +35,7 @@ SET updated     =(now() at time zone 'utc'),
 WHERE id = id_in
 RETURNING *
 
-$BODY$ LANGUAGE 'sql';
+$BODY$ LANGUAGE sql;
 
 
 
@@ -49,7 +48,7 @@ SELECT *
 FROM trips
 WHERE id = id_in;
 
-$BODY$ LANGUAGE 'sql';
+$BODY$ LANGUAGE sql;
 
 
 
@@ -63,4 +62,4 @@ FROM trips
 WHERE created_by = user_id_in
 ORDER BY created;
 
-$BODY$ LANGUAGE 'sql';
+$BODY$ LANGUAGE sql;

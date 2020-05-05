@@ -10,6 +10,6 @@ namespace BlueBoard.Contract.Identity.Commands
             this.Email = email;
         }
 
-        public string Email { get; set; }
+        public string Email { get; }
     }
 }

@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Threading.Tasks;
 using BlueBoard.Common.Enums;
 using BlueBoard.Persistence.Abstractions.Entities;
@@ -25,6 +27,19 @@ namespace BlueBoard.Persistence.Repositories
                 commandType: CommandType.StoredProcedure);
 
             return userExists;
+        }
+
+        public async Task<IEnumerable<UserEntity>> GetAllAsync(IDbConnection connection, long[] usersIds)
+        {
+            var parameters = new
+            {
+                users_ids_in = usersIds
+            };
+
+            var users = await connection.QueryAsync<UserEntity>("find_users_by_ids_v1", parameters,
+                commandType: CommandType.StoredProcedure);
+
+            return users;
         }
 
         public async Task<UserEntity> CreateUserAsync(IDbConnection connection, string email, long? createdBy = null)

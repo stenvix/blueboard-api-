@@ -1,1 +1,1 @@
-DROP TABLE trips
+DROP TABLE IF EXISTS trips
