@@ -3,8 +3,13 @@ using MediatR;
 
 namespace BlueBoard.Contract.Identity.Commands
 {
-    public class UpdateCurrentProfileCommand : IRequest<ProfileModel>
+    public class UpdateCurrentProfileCommand : IRequest<UserModel>
     {
-        public SlimProfileModel Profile { get; set; }
+        public UpdateCurrentProfileCommand(UserModel profile)
+        {
+            this.Profile = profile;
+        }
+
+        public UserModel Profile { get; }
     }
 }

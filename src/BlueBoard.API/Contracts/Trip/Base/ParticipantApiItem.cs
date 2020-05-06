@@ -1,6 +1,6 @@
 namespace BlueBoard.API.Contracts.Trip.Base
 {
-    public class ParticipantItem
+    public class ParticipantApiItem
     {
         public long Id { get; set; }
 

@@ -37,8 +37,8 @@ $BODY$ LANGUAGE sql;
 
 
 CREATE OR REPLACE FUNCTION update_user_v1(id_in BIGINT, first_name_in VARCHAR(128), last_name_in VARCHAR(128),
-                                            username_in VARCHAR(128), email_in VARCHAR(256), phone_in VARCHAR(16),
-                                            updated_by_in BIGINT)
+                                          username_in VARCHAR(128), email_in VARCHAR(256), phone_in VARCHAR(16),
+                                          updated_by_in BIGINT)
     RETURNS SETOF users
 AS
 $BODY$
@@ -77,5 +77,19 @@ $BODY$
 SELECT *
 FROM users
 WHERE id = ANY (users_ids_in)
+
+$BODY$ LANGUAGE sql;
+
+
+
+CREATE OR REPLACE FUNCTION find_user_by_query_v1(query_in VARCHAR(128))
+    RETURNS SETOF users AS
+$BODY$
+
+SELECT *
+FROM users
+WHERE first_name LIKE '%' || query_in || '%'
+   OR last_name LIKE '%' || query_in || '%'
+   OR username LIKE '%' || query_in || '%'
 
 $BODY$ LANGUAGE sql;

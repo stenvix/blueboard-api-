@@ -1,6 +1,7 @@
 using BlueBoard.API.Contracts.Auth;
 using BlueBoard.API.Contracts.Profile;
 using BlueBoard.API.Contracts.Profile.Base;
+using BlueBoard.API.Contracts.Users;
 using BlueBoard.Contract.Common.Models;
 using BlueBoard.Contract.Identity.Models;
 using BlueBoard.Persistence.Abstractions.Entities;
@@ -12,29 +13,29 @@ namespace BlueBoard.API.Contracts.Mappings
         public IdentityProfile()
         {
             // Requests
-            this.CreateMap<UpdateProfileRequest, SlimProfileModel>();
+            this.CreateMap<UpdateProfileRequest, UserModel>();
 
             // Responses
             this.CreateMap<AccessTokenModel, VerifyAccessResponse>();
-            this.CreateMap<ProfileModel, ProfileResponse>();
+            this.CreateMap<UserModel, ProfileResponse>();
 
-            this.CreateMap<ProfileModel, GetProfileResponse>()
-                .IncludeBase<ProfileModel, ProfileResponse>();
+            this.CreateMap<UserModel, GetProfileResponse>()
+                .IncludeBase<UserModel, ProfileResponse>();
 
-            this.CreateMap<ProfileModel, UpdateProfileResponse>()
-                .IncludeBase<ProfileModel, ProfileResponse>();
+            this.CreateMap<UserModel, UpdateProfileResponse>()
+                .IncludeBase<UserModel, ProfileResponse>();
 
 
             // Models
-            this.CreateMap<UserEntity, SlimUserModel>();
+            this.CreateMap<UserEntity, BaseUserModel>();
 
-            this.CreateMap<UserEntity, SlimProfileModel>()
+            this.CreateMap<UserEntity, SlimUserModel>()
+                .IncludeBase<UserEntity, BaseUserModel>();
+
+            this.CreateMap<UserEntity, UserModel>()
                 .IncludeBase<UserEntity, SlimUserModel>();
 
-            this.CreateMap<UserEntity, ProfileModel>()
-                .IncludeBase<UserEntity, SlimProfileModel>();
-
-            this.CreateMap<SlimProfileModel, UserEntity>()
+            this.CreateMap<BaseUserModel, UserEntity>()
                 .ForMember(dest => dest.FirstName, src =>
                 {
                     src.Condition(i => !string.IsNullOrEmpty(i.FirstName));
@@ -49,7 +50,14 @@ namespace BlueBoard.API.Contracts.Mappings
                 {
                     src.Condition(i => !string.IsNullOrEmpty(i.Username));
                     src.MapFrom(i => i.Username);
-                })
+                });
+
+            this.CreateMap<SlimUserModel, UserEntity>()
+                .IncludeBase<BaseUserModel, UserEntity>()
+                .ForMember(dest => dest.Id, src => src.Ignore());
+
+            this.CreateMap<UserModel, UserEntity>()
+                .IncludeBase<SlimUserModel, UserEntity>()
                 .ForMember(dest => dest.Email, src =>
                 {
                     src.Condition(i => !string.IsNullOrEmpty(i.Email));
@@ -60,6 +68,8 @@ namespace BlueBoard.API.Contracts.Mappings
                     src.Condition(i => !string.IsNullOrEmpty(i.Phone));
                     src.MapFrom(i => i.Phone);
                 });
+
+            this.CreateMap<SlimUserModel, SlimUserApiItem>();
         }
     }
 }

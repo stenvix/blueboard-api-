@@ -1,11 +1,9 @@
 using System;
 using BlueBoard.Common.Enums;
-using BlueBoard.Contract.Common.Models;
-using BlueBoard.Contract.Identity.Models;
 
 namespace BlueBoard.API.Contracts.Trip.Base
 {
-    public class TripItem
+    public class TripApiItem
     {
         public long Id { get; set; }
 
@@ -19,6 +17,6 @@ namespace BlueBoard.API.Contracts.Trip.Base
 
         public TripStatus Status { get; set; }
 
-        public ParticipantItem CreatedBy { get; set; }
+        public ParticipantApiItem CreatedBy { get; set; }
     }
 }

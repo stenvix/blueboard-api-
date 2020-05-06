@@ -10,7 +10,7 @@ using MediatR;
 
 namespace BlueBoard.Module.Identity.Commands.Profile
 {
-    public class UpdateCurrentProfileCommandHandler : IRequestHandler<UpdateCurrentProfileCommand, ProfileModel>
+    public class UpdateCurrentProfileCommandHandler : IRequestHandler<UpdateCurrentProfileCommand, UserModel>
     {
         private readonly IMapper mapper;
         private readonly ICurrentUserProvider currentUserProvider;
@@ -26,7 +26,7 @@ namespace BlueBoard.Module.Identity.Commands.Profile
             this.userRepository = userRepository;
         }
 
-        public async Task<ProfileModel> Handle(UpdateCurrentProfileCommand request, CancellationToken cancellationToken)
+        public async Task<UserModel> Handle(UpdateCurrentProfileCommand request, CancellationToken cancellationToken)
         {
             using (var unitOfWork = this.unitOfWorkFactory.Create())
             {
@@ -35,7 +35,7 @@ namespace BlueBoard.Module.Identity.Commands.Profile
                 user = await this.userRepository.Update(unitOfWork.Connection, user, user.Id);
                 unitOfWork.Commit();
 
-                return this.mapper.Map<ProfileModel>(user);
+                return this.mapper.Map<UserModel>(user);
             }
         }
     }

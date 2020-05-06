@@ -1,10 +1,8 @@
 using BlueBoard.Contract.Common;
 using BlueBoard.Contract.Identity.Commands;
-using BlueBoard.Module.Common;
 using BlueBoard.Module.Common.Validation;
 using BlueBoard.Persistence.Abstractions;
 using FluentValidation;
-using FluentValidation.Validators;
 
 namespace BlueBoard.Module.Identity.Commands.Profile
 {
@@ -18,12 +16,12 @@ namespace BlueBoard.Module.Identity.Commands.Profile
             this.ValidateEmail(i => i.Profile.Email, command => !string.IsNullOrEmpty(command.Profile.Email));
 
             this.RuleFor(i => i.Profile.FirstName)
-                .SetValidator(new MaximumLengthValidator(Constraints.NameLength))
+                .MaximumLength(Constraints.NameLength)
                 .WithErrorCode(ErrorCodes.InvalidFirstNameLength)
                 .When(i => !string.IsNullOrEmpty(i.Profile.FirstName));
 
             this.RuleFor(i => i.Profile.LastName)
-                .SetValidator(new MaximumLengthValidator(Constraints.NameLength))
+                .MaximumLength(Constraints.NameLength)
                 .WithErrorCode(ErrorCodes.InvalidLastNameLength)
                 .When(i => !string.IsNullOrEmpty(i.Profile.LastName));
 
@@ -34,7 +32,7 @@ namespace BlueBoard.Module.Identity.Commands.Profile
             this.RuleFor(i => i.Profile.Phone)
                 .SetValidator(new PhoneValidator())
                 .WithErrorCode(ErrorCodes.InvalidPhone)
-                .SetValidator(new MaximumLengthValidator(Constraints.PhoneLength))
+                .MaximumLength(Constraints.PhoneLength)
                 .WithErrorCode(ErrorCodes.InvalidPhoneLength)
                 .When(i => !string.IsNullOrEmpty(i.Profile.Phone));
         }

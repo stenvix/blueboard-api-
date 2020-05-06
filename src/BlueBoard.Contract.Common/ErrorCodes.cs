@@ -41,6 +41,7 @@ namespace BlueBoard.Contract.Common
         public static string InvalidPhoneLength => "invalid_phone_length";
         public static string InvalidNameLength => "invalid_name_length";
         public static string InvalidDescriptionLength => "invalid_description_length";
+        public static string InvalidQueryLength => "invalid_query_length";
 
         public static string AlreadyExists => "already_exists";
     }

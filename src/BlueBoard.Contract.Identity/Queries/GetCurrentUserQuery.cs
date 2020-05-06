@@ -3,7 +3,7 @@ using MediatR;
 
 namespace BlueBoard.Contract.Identity.Queries
 {
-    public class GetCurrentUserQuery : IRequest<ProfileModel>
+    public class GetCurrentUserQuery : IRequest<UserModel>
     {
     }
 }

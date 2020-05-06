@@ -4,6 +4,7 @@ using AutoMapper;
 using BlueBoard.API.Contracts.Base;
 using BlueBoard.API.Contracts.Profile;
 using BlueBoard.Contract.Identity.Commands;
+using BlueBoard.Contract.Identity.Models;
 using BlueBoard.Contract.Identity.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -30,7 +31,7 @@ namespace BlueBoard.API.Controllers
         [ProducesResponseType(typeof(ExtendedErrorApiResponse), (int)HttpStatusCode.BadRequest)]
         public async Task<UpdateProfileResponse> UpdateCurrentProfileAsync(UpdateProfileRequest request)
         {
-            var user = await this.Mediator.Send(this.Mapper.Map<UpdateCurrentProfileCommand>(request));
+            var user = await this.Mediator.Send(new UpdateCurrentProfileCommand(this.Mapper.Map<UserModel>(request)));
 
             return this.Mapper.Map<UpdateProfileResponse>(user);
         }

@@ -18,5 +18,7 @@ namespace BlueBoard.Persistence.Abstractions.Repositories
         Task<UserEntity> FindById(IDbConnection connection, long id);
 
         Task<UserEntity> Update(IDbConnection connection, UserEntity entity, long updatedBy);
+
+        Task<IEnumerable<UserEntity>> SearchByQueryAsync(IDbConnection connection, string query);
     }
 }

@@ -36,7 +36,7 @@ namespace BlueBoard.API.Controllers
             return this.Mapper.Map<GetTripResponse>(trip);
         }
 
-        [HttpGet("{id:long}/participant")]
+        [HttpGet("{id:long}/participants")]
         [ProducesResponseType(typeof(GetParticipantsResponse), (int)HttpStatusCode.OK)]
         public async Task<GetParticipantsResponse> GetParticipantsAsync([FromRoute] long id)
         {
@@ -58,7 +58,7 @@ namespace BlueBoard.API.Controllers
             return this.Mapper.Map<CreateTripResponse>(trip);
         }
 
-        [HttpPost("{id:long}/participant")]
+        [HttpPost("{id:long}/participants")]
         public async Task<AddParticipantResponse> AddParticipantAsync([FromRoute]long id, [FromBody] AddParticipantRequest request)
         {
             await this.Mediator.Send(new AddParticipantCommand(id, request.UserId));
@@ -83,7 +83,7 @@ namespace BlueBoard.API.Controllers
 
         #region DELETE
 
-        [HttpDelete("{id:long}/participant/{user:long}")]
+        [HttpDelete("{id:long}/participants/{user:long}")]
         public async Task<RemoveParticipantResponse> RemoveParticipantAsync([FromRoute] long id, [FromRoute] long user)
         {
             await this.Mediator.Send(new RemoveParticipantCommand(id, user));

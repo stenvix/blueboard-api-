@@ -50,12 +50,12 @@ namespace BlueBoard.API.Contracts.Mappings
                 .ForMember(dest => dest.Id, src => src.Ignore());
 
 
-            this.CreateMap<TripModel, TripItem>();
+            this.CreateMap<TripModel, TripApiItem>();
 
             this.CreateMap<UserEntity, ParticipantModel>()
-                .IncludeBase<UserEntity, SlimUserModel>();
+                .IncludeBase<UserEntity, BaseUserModel>();
 
-            this.CreateMap<ParticipantModel, ParticipantItem>();
+            this.CreateMap<ParticipantModel, ParticipantApiItem>();
             this.CreateMap<ParticipantEntity, ParticipantModel>();
 
             this.CreateMap<AddParticipantCommand, ParticipantEntity>();

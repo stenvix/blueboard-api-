@@ -3,6 +3,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using BlueBoard.Common.Enums;
+using BlueBoard.Persistence.Abstractions;
 using BlueBoard.Persistence.Abstractions.Entities;
 using BlueBoard.Persistence.Abstractions.Repositories;
 using BlueBoard.Persistence.Helpers;
@@ -93,10 +94,23 @@ namespace BlueBoard.Persistence.Repositories
                 updated_by_in = updatedBy
             };
 
-            var user = await connection.QueryFirstAsync<UserEntity>("update_user_v1", parameters,
+            var user = await connection.QuerySingleAsync<UserEntity>("update_user_v1", parameters,
                 commandType: CommandType.StoredProcedure);
 
             return user;
+        }
+
+        public async Task<IEnumerable<UserEntity>> SearchByQueryAsync(IDbConnection connection, string query)
+        {
+            var parameters = new
+            {
+                query_in = DbFieldHelper.GetDbString(query, Constraints.NameLength)
+            };
+
+            var users = await connection.QueryAsync<UserEntity>("find_user_by_query_v1", parameters,
+                commandType: CommandType.StoredProcedure);
+
+            return users;
         }
     }
 }

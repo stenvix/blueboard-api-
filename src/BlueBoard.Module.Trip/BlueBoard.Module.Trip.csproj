@@ -9,4 +9,8 @@
       <ProjectReference Include="..\BlueBoard.Module.Common\BlueBoard.Module.Common.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Queries\Search" />
+    </ItemGroup>
+
 </Project>

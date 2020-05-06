@@ -19,6 +19,6 @@ namespace BlueBoard.API.Contracts.Trip.Base
 
         public TripStatus Status { get; set; }
 
-        public SlimUserModel CreatedBy { get; set; }
+        public BaseUserModel CreatedBy { get; set; }
     }
 }
