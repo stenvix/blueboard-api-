@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace BlueBoard.API.Swagger
+namespace BlueBoard.API.Filters
 {
     public class LowercaseDocumentFilter : IDocumentFilter
     {

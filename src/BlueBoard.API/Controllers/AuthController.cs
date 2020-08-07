@@ -22,7 +22,7 @@ namespace BlueBoard.API.Controllers
         [ProducesResponseType(typeof(ErrorApiResponse), (int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> SignInAsync([FromBody] SignInRequest request)
         {
-            await this.Mediator.Send(new SignInCommand(request.Email)).ConfigureAwait(false);
+            await this.Mediator.Send(new SignIn(request.Email)).ConfigureAwait(false);
 
             return new OkResult();
         }
@@ -33,7 +33,7 @@ namespace BlueBoard.API.Controllers
         [ProducesResponseType(typeof(ErrorApiResponse), (int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> SignUpAsync([FromBody] SignUpRequest request)
         {
-            await this.Mediator.Send(new SignUpCommand(request.Email)).ConfigureAwait(false);
+            await this.Mediator.Send(new SignUp(request.Email)).ConfigureAwait(false);
 
             return new OkResult();
         }
@@ -44,7 +44,7 @@ namespace BlueBoard.API.Controllers
         [ProducesResponseType(typeof(ErrorApiResponse), (int)HttpStatusCode.BadRequest)]
         public async Task<VerifyAccessResponse> VerifyAccessAsync([FromBody] VerifyAccessRequest request)
         {
-            var response = await this.Mediator.Send(new VerifyAccessCommand(request.Email, request.Password));
+            var response = await this.Mediator.Send(new VerifyAccess(request.Email, request.Password));
 
             return this.Mapper.Map<VerifyAccessResponse>(response);
         }

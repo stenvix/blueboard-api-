@@ -1,34 +1,35 @@
 using System;
 using System.Linq;
+using BlueBoard.Contract.Identity.Queries;
 using BlueBoard.Module.Common;
 using BlueBoard.Persistence.Abstractions;
-using BlueBoard.Persistence.Abstractions.Repositories;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 
 namespace BlueBoard.API.Helpers
 {
     public class CurrentUserProvider : ICurrentUserProvider
     {
-        private readonly IHttpContextAccessor httpContextAccessor;
-        private readonly IConnectionFactory connectionFactory;
-        private readonly IUserRepository userRepository;
         private Lazy<string> emailLazy;
 
-        public CurrentUserProvider(IHttpContextAccessor httpContextAccessor, IConnectionFactory connectionFactory,
-            IUserRepository userRepository)
+        public CurrentUserProvider(
+            IMediator mediator,
+            IHttpContextAccessor httpContextAccessor)
         {
-            this.httpContextAccessor = httpContextAccessor;
-            this.connectionFactory = connectionFactory;
-            this.userRepository = userRepository;
+            this.Mediator = mediator;
+            this.HttpContextAccessor = httpContextAccessor;
             this.emailLazy = new Lazy<string>(this.GetEmail);
         }
 
         public long UserId => this.GetId();
         public string Email => this.emailLazy.Value;
 
+        private IMediator Mediator { get; }
+        private IHttpContextAccessor HttpContextAccessor { get; }
+
         private long GetId()
         {
-            if (long.TryParse(this.httpContextAccessor.HttpContext.User.Identity.Name, out var id))
+            if (long.TryParse(this.HttpContextAccessor.HttpContext.User.Identity.Name, out var id))
             {
                 return id;
             }
@@ -44,11 +45,8 @@ namespace BlueBoard.API.Helpers
                 return string.Empty;
             }
 
-            using (var connection = this.connectionFactory.Create())
-            {
-                var user = this.userRepository.FindById(connection, id).GetAwaiter().GetResult();
-                return user.Email;
-            }
+            var user = this.Mediator.Send(new GetUser(id)).GetAwaiter().GetResult();
+            return user.Email;
         }
     }
 }

@@ -2,6 +2,8 @@ using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using BlueBoard.API.Contracts.Trip;
+using BlueBoard.Contract.Identity.Commands;
+using BlueBoard.Contract.Identity.Queries;
 using BlueBoard.Contract.Trip.Commands;
 using BlueBoard.Contract.Trip.Models;
 using BlueBoard.Contract.Trip.Queries;
@@ -22,7 +24,7 @@ namespace BlueBoard.API.Controllers
         [ProducesResponseType(typeof(GetTripsResponse), (int)HttpStatusCode.OK)]
         public async Task<GetTripsResponse> GetTripsAsync()
         {
-            var trips = await this.Mediator.Send(new GetTripsQuery());
+            var trips = await this.Mediator.Send(new GetTrips());
 
             return this.Mapper.Map<GetTripsResponse>(trips);
         }
@@ -31,7 +33,7 @@ namespace BlueBoard.API.Controllers
         [ProducesResponseType(typeof(GetTripResponse), (int)HttpStatusCode.OK)]
         public async Task<GetTripResponse> GetTripAsync([FromRoute] int id)
         {
-            var trip = await this.Mediator.Send(new GetTripQuery(id));
+            var trip = await this.Mediator.Send(new GetTrip(id));
 
             return this.Mapper.Map<GetTripResponse>(trip);
         }
@@ -40,7 +42,7 @@ namespace BlueBoard.API.Controllers
         [ProducesResponseType(typeof(GetParticipantsResponse), (int)HttpStatusCode.OK)]
         public async Task<GetParticipantsResponse> GetParticipantsAsync([FromRoute] long id)
         {
-            var participants = await this.Mediator.Send(new GetParticipantsQuery(id));
+            var participants = await this.Mediator.Send(new GetParticipants(id));
 
             return this.Mapper.Map<GetParticipantsResponse>(participants);
         }
@@ -53,7 +55,7 @@ namespace BlueBoard.API.Controllers
         [ProducesResponseType(typeof(CreateTripResponse), (int)HttpStatusCode.OK)]
         public async Task<CreateTripResponse> CreateTripAsync([FromBody] CreateTripRequest request)
         {
-            var trip = await this.Mediator.Send(new CreateTripCommand(this.Mapper.Map<SlimTripModel>(request)));
+            var trip = await this.Mediator.Send(new CreateTrip(this.Mapper.Map<SlimTripModel>(request)));
 
             return this.Mapper.Map<CreateTripResponse>(trip);
         }
@@ -61,7 +63,7 @@ namespace BlueBoard.API.Controllers
         [HttpPost("{id:long}/participants")]
         public async Task<AddParticipantResponse> AddParticipantAsync([FromRoute]long id, [FromBody] AddParticipantRequest request)
         {
-            await this.Mediator.Send(new AddParticipantCommand(id, request.UserId));
+            await this.Mediator.Send(new AddParticipant(id, request.UserId));
 
             return new AddParticipantResponse();
         }
@@ -74,7 +76,7 @@ namespace BlueBoard.API.Controllers
         [ProducesResponseType(typeof(UpdateTripResponse), (int)HttpStatusCode.OK)]
         public async Task<UpdateTripResponse> UpdateTripAsync([FromBody] UpdateTripRequest request)
         {
-            var trip = await this.Mediator.Send(new UpdateTripCommand(this.Mapper.Map<TripModel>(request)));
+            var trip = await this.Mediator.Send(new UpdateTrip(this.Mapper.Map<TripModel>(request)));
 
             return this.Mapper.Map<UpdateTripResponse>(trip);
         }
@@ -86,7 +88,7 @@ namespace BlueBoard.API.Controllers
         [HttpDelete("{id:long}/participants/{user:long}")]
         public async Task<RemoveParticipantResponse> RemoveParticipantAsync([FromRoute] long id, [FromRoute] long user)
         {
-            await this.Mediator.Send(new RemoveParticipantCommand(id, user));
+            await this.Mediator.Send(new RemoveParticipant(id, user));
 
             return new RemoveParticipantResponse();
         }

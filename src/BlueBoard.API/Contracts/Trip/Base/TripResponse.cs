@@ -1,7 +1,7 @@
 using System;
 using BlueBoard.API.Contracts.Base;
 using BlueBoard.Common.Enums;
-using BlueBoard.Contract.Common.Models;
+using BlueBoard.Contract.Identity.Models;
 
 namespace BlueBoard.API.Contracts.Trip.Base
 {

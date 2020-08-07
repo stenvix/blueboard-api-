@@ -6,6 +6,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\BlueBoard.Contract.Common\BlueBoard.Contract.Common.csproj" />
+      <ProjectReference Include="..\BlueBoard.Contract.Identity\BlueBoard.Contract.Identity.csproj" />
     </ItemGroup>
 
 </Project>

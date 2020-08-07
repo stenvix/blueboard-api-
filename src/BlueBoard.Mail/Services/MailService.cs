@@ -2,8 +2,8 @@ using System;
 using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
+using BlueBoard.Mail.Config;
 using BlueBoard.Mail.Models;
-using BlueBoard.Module.Mail.Config;
 using Microsoft.Extensions.Configuration;
 
 namespace BlueBoard.Mail.Services

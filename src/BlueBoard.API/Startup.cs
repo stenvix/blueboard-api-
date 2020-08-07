@@ -5,20 +5,18 @@ using AutoMapper;
 using BlueBoard.API.Contracts.Base;
 using BlueBoard.API.Filters;
 using BlueBoard.API.Helpers;
-using BlueBoard.API.Swagger;
+using BlueBoard.Mail.Config;
 using BlueBoard.Mail.Services;
 using BlueBoard.Module.Common;
 using BlueBoard.Module.Common.Validation;
-using BlueBoard.Module.Identity.Commands.SignIn;
+using BlueBoard.Module.Identity;
 using BlueBoard.Module.Identity.Helpers;
-using BlueBoard.Module.Mail.Config;
-using BlueBoard.Module.Trip.Commands.Create;
+using BlueBoard.Module.Trip;
+using BlueBoard.Module.Trip.Repositories;
 using BlueBoard.Persistence;
 using BlueBoard.Persistence.Abstractions;
-using BlueBoard.Persistence.Abstractions.Repositories;
 using BlueBoard.Persistence.Migrations;
 using BlueBoard.Persistence.Postgres;
-using BlueBoard.Persistence.Repositories;
 using Dapper;
 using FluentMigrator.Runner;
 using FluentMigrator.Runner.VersionTableInfo;
@@ -74,9 +72,8 @@ namespace BlueBoard.API
             });
 
             //Libs
-            services.AddMediatR(typeof(SignInCommandHandler), typeof(CreateTripCommandHandler));
-            services.AddValidatorsFromAssemblyContaining<SignInCommandHandler>();
-            services.AddValidatorsFromAssemblyContaining<CreateTripCommandHandler>();
+            services.AddIdentityModule();
+            services.AddTripModule();
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
             services.AddAutoMapper(typeof(ApiRequest));
             services.AddMemoryCache();
@@ -103,10 +100,6 @@ namespace BlueBoard.API
                 new ConnectionStringProvider("Default", this.Configuration));
             services.AddSingleton<IConnectionFactory, PostgresConnectionFactory>();
             services.AddSingleton<IUnitOfWorkFactory, UnitOfWorkFactory>();
-            services.AddSingleton<IUserRepository, UserRepository>();
-            services.AddSingleton<ITripRepository, TripRepository>();
-            services.AddSingleton<IParticipantRepository, ParticipantRepository>();
-
             services.AddTransient<ICurrentUserProvider, CurrentUserProvider>();
         }
 

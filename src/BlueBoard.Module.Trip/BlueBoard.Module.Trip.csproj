@@ -5,12 +5,9 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\BlueBoard.Contract.Identity\BlueBoard.Contract.Identity.csproj" />
       <ProjectReference Include="..\BlueBoard.Contract.Trip\BlueBoard.Contract.Trip.csproj" />
       <ProjectReference Include="..\BlueBoard.Module.Common\BlueBoard.Module.Common.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Queries\Search" />
     </ItemGroup>
 
 </Project>

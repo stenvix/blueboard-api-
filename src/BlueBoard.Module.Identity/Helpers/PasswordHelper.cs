@@ -2,7 +2,7 @@ using System;
 
 namespace BlueBoard.Module.Identity.Helpers
 {
-    public static class PasswordHelper
+    internal static class PasswordHelper
     {
         public static string GeneratePassword()
         {

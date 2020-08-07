@@ -21,7 +21,7 @@ namespace BlueBoard.API.Controllers
         [ProducesResponseType(typeof(GetProfileResponse), (int)HttpStatusCode.OK)]
         public async Task<GetProfileResponse> GetCurrentProfileAsync()
         {
-            var user = await this.Mediator.Send(new GetCurrentUserQuery());
+            var user = await this.Mediator.Send(new GetCurrentUser());
 
             return this.Mapper.Map<GetProfileResponse>(user);
         }
@@ -31,7 +31,7 @@ namespace BlueBoard.API.Controllers
         [ProducesResponseType(typeof(ExtendedErrorApiResponse), (int)HttpStatusCode.BadRequest)]
         public async Task<UpdateProfileResponse> UpdateCurrentProfileAsync(UpdateProfileRequest request)
         {
-            var user = await this.Mediator.Send(new UpdateCurrentProfileCommand(this.Mapper.Map<UserModel>(request)));
+            var user = await this.Mediator.Send(new UpdateCurrentProfile(this.Mapper.Map<UserModel>(request)));
 
             return this.Mapper.Map<UpdateProfileResponse>(user);
         }

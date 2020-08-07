@@ -1,4 +1,4 @@
-namespace BlueBoard.Module.Mail.Config
+namespace BlueBoard.Mail.Config
 {
     public class MailOptions
     {
