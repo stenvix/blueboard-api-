@@ -15,8 +15,8 @@ namespace BlueBoard.API.Contracts
         {
             // Requests
             this.CreateMap<UpdateProfileRequest, UserModel>();
-            this.CreateMap<CreateTripRequest, SlimTripModel>();
-            this.CreateMap<UpdateTripRequest, TripModel>();
+            this.CreateMap<CreateTripRequest, SlimTripInfo>();
+            this.CreateMap<UpdateTripRequest, TripInfo>();
 
             // Responses
             this.CreateMap<AccessTokenModel, VerifyAccessResponse>();
@@ -28,13 +28,13 @@ namespace BlueBoard.API.Contracts
             this.CreateMap<UserModel, UpdateProfileResponse>()
                 .IncludeBase<UserModel, ProfileResponse>();
 
-            this.CreateMap<TripModel, CreateTripResponse>();
-            this.CreateMap<TripModel, UpdateTripResponse>();
-            this.CreateMap<TripModel, GetTripResponse>();
+            this.CreateMap<TripInfo, CreateTripResponse>();
+            this.CreateMap<TripInfo, UpdateTripResponse>();
+            this.CreateMap<TripInfo, GetTripResponse>();
 
             // Items
             this.CreateMap<SlimUserModel, SlimUserApiItem>();
-            this.CreateMap<TripModel, TripApiItem>();
+            this.CreateMap<TripInfo, TripApiItem>();
 
         }
     }

@@ -55,7 +55,7 @@ namespace BlueBoard.API.Controllers
         [ProducesResponseType(typeof(CreateTripResponse), (int)HttpStatusCode.OK)]
         public async Task<CreateTripResponse> CreateTripAsync([FromBody] CreateTripRequest request)
         {
-            var trip = await this.Mediator.Send(new CreateTrip(this.Mapper.Map<SlimTripModel>(request)));
+            var trip = await this.Mediator.Send(new CreateTrip(this.Mapper.Map<SlimTripInfo>(request)));
 
             return this.Mapper.Map<CreateTripResponse>(trip);
         }
@@ -76,7 +76,7 @@ namespace BlueBoard.API.Controllers
         [ProducesResponseType(typeof(UpdateTripResponse), (int)HttpStatusCode.OK)]
         public async Task<UpdateTripResponse> UpdateTripAsync([FromBody] UpdateTripRequest request)
         {
-            var trip = await this.Mediator.Send(new UpdateTrip(this.Mapper.Map<TripModel>(request)));
+            var trip = await this.Mediator.Send(new UpdateTrip(this.Mapper.Map<TripInfo>(request)));
 
             return this.Mapper.Map<UpdateTripResponse>(trip);
         }

@@ -8,13 +8,13 @@ namespace BlueBoard.Module.Trip
     {
         public ModuleProfile()
         {
-            this.CreateMap<TripEntity, SlimTripModel>();
+            this.CreateMap<TripEntity, SlimTripInfo>();
 
-            this.CreateMap<TripEntity, TripModel>()
-                .IncludeBase<TripEntity, SlimTripModel>()
+            this.CreateMap<TripEntity, TripInfo>()
+                .IncludeBase<TripEntity, SlimTripInfo>()
                 .ForMember(dest=>dest.CreatedBy, src=>src.Ignore());
 
-            this.CreateMap<SlimTripModel, TripEntity>()
+            this.CreateMap<SlimTripInfo, TripEntity>()
                 .ForMember(dest => dest.Name, src =>
                 {
                     src.Condition(i => !string.IsNullOrEmpty(i.Name));
@@ -32,8 +32,8 @@ namespace BlueBoard.Module.Trip
                     src.MapFrom(i => i.EndDate);
                 });
 
-            this.CreateMap<TripModel, TripEntity>()
-                .IncludeBase<SlimTripModel, TripEntity>()
+            this.CreateMap<TripInfo, TripEntity>()
+                .IncludeBase<SlimTripInfo, TripEntity>()
                 .ForMember(dest => dest.Id, src => src.Ignore());
 
         }

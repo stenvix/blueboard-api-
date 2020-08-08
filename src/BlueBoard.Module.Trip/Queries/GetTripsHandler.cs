@@ -13,7 +13,7 @@ using MediatR;
 
 namespace BlueBoard.Module.Trip.Queries
 {
-    internal class GetTripsHandler : IRequestHandler<GetTrips, TripModel[]>
+    internal class GetTripsHandler : IRequestHandler<GetTrips, TripInfo[]>
     {
         public GetTripsHandler(
             IMapper mapper,
@@ -35,7 +35,7 @@ namespace BlueBoard.Module.Trip.Queries
         private IConnectionFactory ConnectionFactory { get; }
         private ITripRepository TripRepository { get; }
 
-        public async Task<TripModel[]> Handle(GetTrips request, CancellationToken cancellationToken)
+        public async Task<TripInfo[]> Handle(GetTrips request, CancellationToken cancellationToken)
         {
             using (var connection = this.ConnectionFactory.Create())
             {
@@ -44,10 +44,10 @@ namespace BlueBoard.Module.Trip.Queries
                 var usersIds = tripsEntities.Select(i => i.CreatedBy).Distinct().ToArray();
                 var creators = await this.Mediator.Send(new GetUsers(usersIds), cancellationToken);
 
-                var trips = new List<TripModel>();
+                var trips = new List<TripInfo>();
                 foreach (var tripEntity in tripsEntities)
                 {
-                    var trip = this.Mapper.Map<TripModel>(tripEntity);
+                    var trip = this.Mapper.Map<TripInfo>(tripEntity);
                     trip.CreatedBy = creators.Single(i=>i.Id == tripEntity.CreatedBy);
                     trips.Add(trip);
                 }

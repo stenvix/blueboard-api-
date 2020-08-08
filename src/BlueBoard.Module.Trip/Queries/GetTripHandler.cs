@@ -10,7 +10,7 @@ using MediatR;
 
 namespace BlueBoard.Module.Trip.Queries
 {
-    internal class GetTripHandler : IRequestHandler<GetTrip, TripModel>
+    internal class GetTripHandler : IRequestHandler<GetTrip, TripInfo>
     {
         public GetTripHandler(
             IMapper mapper,
@@ -29,12 +29,12 @@ namespace BlueBoard.Module.Trip.Queries
         private IConnectionFactory ConnectionFactory { get; }
         private ITripRepository TripRepository { get; }
 
-        public async Task<TripModel> Handle(GetTrip request, CancellationToken cancellationToken)
+        public async Task<TripInfo> Handle(GetTrip request, CancellationToken cancellationToken)
         {
             using (var connection = this.ConnectionFactory.Create())
             {
                 var entity = await this.TripRepository.GetAsync(connection, request.TripId);
-                var trip = this.Mapper.Map<TripModel>(entity);
+                var trip = this.Mapper.Map<TripInfo>(entity);
                 trip.CreatedBy = await this.Mediator.Send(new GetUser(entity.CreatedBy), cancellationToken);
                 return trip;
             }

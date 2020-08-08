@@ -3,13 +3,13 @@ using MediatR;
 
 namespace BlueBoard.Contract.Trip.Commands
 {
-    public class CreateTrip : IRequest<TripModel>
+    public class CreateTrip : IRequest<TripInfo>
     {
-        public CreateTrip(SlimTripModel trip)
+        public CreateTrip(SlimTripInfo trip)
         {
             this.Trip = trip;
         }
 
-        public SlimTripModel Trip { get; }
+        public SlimTripInfo Trip { get; }
     }
 }

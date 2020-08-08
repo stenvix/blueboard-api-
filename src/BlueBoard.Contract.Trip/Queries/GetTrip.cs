@@ -3,7 +3,7 @@ using MediatR;
 
 namespace BlueBoard.Contract.Trip.Queries
 {
-    public class GetTrip : IRequest<TripModel>
+    public class GetTrip : IRequest<TripInfo>
     {
         public GetTrip(long tripId)
         {

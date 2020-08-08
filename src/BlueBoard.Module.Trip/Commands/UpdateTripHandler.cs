@@ -13,7 +13,7 @@ using MediatR;
 
 namespace BlueBoard.Module.Trip.Commands
 {
-    internal class UpdateTripHandler : IRequestHandler<UpdateTrip, TripModel>
+    internal class UpdateTripHandler : IRequestHandler<UpdateTrip, TripInfo>
     {
         public UpdateTripHandler(
             IMapper mapper,
@@ -35,7 +35,7 @@ namespace BlueBoard.Module.Trip.Commands
         private ITripRepository TripRepository { get; }
         private ICurrentUserProvider CurrentUserProvider { get; }
 
-        public async Task<TripModel> Handle(UpdateTrip request, CancellationToken cancellationToken)
+        public async Task<TripInfo> Handle(UpdateTrip request, CancellationToken cancellationToken)
         {
             using (var unitOfWork = this.UnitOfWorkFactory.Create())
             {
