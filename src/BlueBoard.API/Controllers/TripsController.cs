@@ -68,6 +68,15 @@ namespace BlueBoard.API.Controllers
             return new AddParticipantResponse();
         }
 
+        [HttpPost]
+        [ProducesResponseType(typeof(CreateTripListResponse), (int)HttpStatusCode.OK)]
+        public async Task<CreateTripListResponse> CreateListAsync([FromBody] CreateTripListRequest request)
+        {
+            var list = await this.Mediator.Send(new CreateTripList(this.Mapper.Map<SlimTripListInfo>(request)));
+
+            return this.Mapper.Map<CreateTripListResponse>(list);
+        }
+
         #endregion
 
         #region PUT
@@ -79,6 +88,15 @@ namespace BlueBoard.API.Controllers
             var trip = await this.Mediator.Send(new UpdateTrip(this.Mapper.Map<TripInfo>(request)));
 
             return this.Mapper.Map<UpdateTripResponse>(trip);
+        }
+
+        [HttpPut]
+        [ProducesResponseType(typeof(UpdateTripListResponse), (int)HttpStatusCode.OK)]
+        public async Task<UpdateTripListResponse> UpdateTripListAsync([FromBody] UpdateTripListRequest request)
+        {
+            var tripList = this.Mediator.Send(new UpdateTripList(this.Mapper.Map<TripListInfo>(request)));
+
+            return this.Mapper.Map<UpdateTripListResponse>(tripList);
         }
 
         #endregion

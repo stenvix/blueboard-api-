@@ -1,20 +1,22 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using BlueBoard.Contract.Common;
 using BlueBoard.Contract.Trip.Commands;
 using BlueBoard.Contract.Trip.Models;
 using BlueBoard.Module.Common;
+using BlueBoard.Module.Common.Exceptions;
 using BlueBoard.Module.Trip.Repositories;
-using BlueBoard.Module.Trip.Repositories.Entities;
 using BlueBoard.Persistence.Abstractions;
 using MediatR;
 
 namespace BlueBoard.Module.Trip.Commands
 {
-    internal class CreateTripListHandler : IRequestHandler<CreateTripList, TripListInfo>
+    internal class UpdateTripListHandler : IRequestHandler<UpdateTripList, TripListInfo>
     {
-        public CreateTripListHandler(
+        public UpdateTripListHandler(
             IMapper mapper,
+            IMediator mediator,
             IUnitOfWorkFactory unitOfWorkFactory,
             ITripListRepository tripListRepository,
             ICurrentUserProvider currentUserProvider)
@@ -30,13 +32,19 @@ namespace BlueBoard.Module.Trip.Commands
         private ITripListRepository TripListRepository { get; }
         private ICurrentUserProvider CurrentUserProvider { get; }
 
-        public async Task<TripListInfo> Handle(CreateTripList request, CancellationToken cancellationToken)
+        public async Task<TripListInfo> Handle(UpdateTripList request, CancellationToken cancellationToken)
         {
             using (var unitOfWork = this.UnitOfWorkFactory.Create())
             {
-                var entity = this.Mapper.Map<TripListEntity>(request.TripList);
-                entity.CreatedBy = this.CurrentUserProvider.UserId;
-                entity = await this.TripListRepository.CreateAsync(unitOfWork.Connection, entity);
+                var entity = await this.TripListRepository.GetAsync(unitOfWork.Connection, request.TripList.Id);
+                if (entity == null)
+                {
+                    throw new BlueBoardValidationException(ErrorCodes.InvalidId);
+                }
+
+                this.Mapper.Map(request.TripList, entity);
+                entity.UpdatedBy = this.CurrentUserProvider.UserId;
+                entity = await this.TripListRepository.UpdateAsync(unitOfWork.Connection, entity);
                 unitOfWork.Commit();
 
                 return this.Mapper.Map<TripListInfo>(entity);

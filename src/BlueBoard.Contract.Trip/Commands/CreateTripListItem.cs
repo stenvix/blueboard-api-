@@ -5,6 +5,6 @@ namespace BlueBoard.Contract.Trip.Commands
 {
     public class CreateTripListItem : IRequest<TripListItem>
     {
-        public TripListItem ListItem { get; set; }
+        public SlimTripListItem ListItem { get; set; }
     }
 }
